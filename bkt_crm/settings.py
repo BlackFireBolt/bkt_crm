@@ -26,7 +26,7 @@ SECRET_KEY = '2j+8w4%!%q)b5g=votzko%@12l_(#v9an50=03@!5$u$%vyy-e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bkt-crm.tk', 'www.bkt-crm.tk', '213.183.56.121']
 
 # Application definition
 
@@ -92,12 +92,24 @@ TICKS_GROUP_NAME = 'manager'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bktcrm_db',
+        'USER': 'bktcrm_admin',
+        'PASSWORD': 'ji1saVlU',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
