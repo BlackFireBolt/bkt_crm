@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     'lead.apps.LeadConfig',
     'authentication.apps.AuthConfig',
     'django_tables2',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -55,8 +55,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bkt_crm.urls'
 
-ROOT_URLCONF = 'bkt_crm.urls'
-LOGIN_REDIRECT_URL = "lead:index"   # Route defined in app/urls.py
+LOGIN_REDIRECT_URL = "lead:index"  # Route defined in app/urls.py
 LOGOUT_REDIRECT_URL = "lead:index"  # Route defined in app/urls.py
 TEMPLATE_DIR = os.path.join(BASE_DIR, "bkt_crm/templates")  # ROOT dir for templates
 
@@ -77,7 +76,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bkt_crm.wsgi.application'
+ASGI_APPLICATION = "bkt_crm.routing.application"
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+TICKS_GROUP_NAME = 'manager'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -88,7 +98,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -108,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -121,7 +129,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

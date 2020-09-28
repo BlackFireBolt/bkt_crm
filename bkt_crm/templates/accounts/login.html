@@ -16,7 +16,7 @@
                 {% csrf_token %}
 
                 <div class="card-header">
-                    <h5 class="title">Login</h5>
+                    <h5 class="title">Авторизация</h5>
                     <h6 class="card-category">
                       {% if msg %}
                         <span class="text-danger">{{ msg }}</span>
@@ -30,7 +30,7 @@
 
                         <div class="col-md-3 px-md-1">
                             <div class="form-group">
-                                <label>Username</label>
+                                <label>Имя пользователя</label>
                                 {{ form.username }}
                             </div>
                         </div>
@@ -40,7 +40,7 @@
 
                         <div class="col-md-3 px-md-1">
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>Пароль</label>
                                 {{ form.password }}
                             </div>
                         </div>
@@ -49,7 +49,7 @@
 
                 </div>
                 <div class="card-footer">
-                    <button type="submit" name="login" class="btn btn-fill btn-primary">Login</button>
+                    <button type="submit" name="login" class="btn btn-fill btn-primary">Вход</button>
                 </div>
 
             </form>
