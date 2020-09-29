@@ -14,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
-
+    if isinstance(obj, str):
+        return obj
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
@@ -44,8 +45,8 @@ class Lead(models.Model):
     name = models.CharField(max_length=64, blank=True, verbose_name='Имя')
     email = models.CharField(max_length=64, blank=True, unique=False, verbose_name='Email')
     phone = models.CharField(max_length=64, unique=False, verbose_name='Телефон')
-    country = models.CharField(max_length=5, unique=False, verbose_name='Страна')
-    created_date = models.DateTimeField(db_index=True, verbose_name='Дата регистрации')
+    country = models.CharField(max_length=5, unique=False, blank=True, default="None", verbose_name='Страна')
+    created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True, verbose_name='Дата регистрации')
 
     # additional information-----------------
     OPTIONS = (
@@ -95,7 +96,11 @@ class Lead(models.Model):
         }
 
         # Send notification to opened channels
-        broadcast(self.manager.id, content)
+        if self.manager:
+            broadcast(self.manager.id, content)
+        else:
+            for user in User.groups.filter(name='Администратор'):
+                broadcast(user.id, content)
 
     class Meta:
         verbose_name = 'Лид'
