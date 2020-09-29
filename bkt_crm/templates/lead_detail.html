@@ -59,7 +59,7 @@
                                 Сохранить изменения
                             </button>
                             {% if request.user|has_group:'Администратор' %}
-                            <a href="{% url 'lead:admin_page' %}" class="btn btn-primary" type="button">Назад</a>
+                            <a href="{% url 'lead:admin_lead_list' %}" class="btn btn-primary" type="button">Назад</a>
                             {% else %}
                             <a href="{% url 'lead:index' %}" class="btn btn-primary" type="button">Назад</a>
                             {% endif %}
