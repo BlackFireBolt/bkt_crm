@@ -27,7 +27,7 @@
   <link rel="icon" type="image/png"          href="{% static 'assets/img/favicon.png'    %}">
 
   <title>
-    Black Dashboard Django - {% block title %}{% endblock %} | Creative-Tim
+    Панель Администратора БКТ - {% block title %}{% endblock %}
   </title>
 
   <!--     Fonts and icons     -->
@@ -49,7 +49,7 @@
 
 </head>
 
-<body class="">
+<body class="white-content">
   <div class="wrapper">
 
     {% include 'includes/sidebar.html' %}
@@ -71,6 +71,12 @@
   </div>
 
   {% block add_lead_modal %}
+  {% endblock %}
+
+  {% block import_modal %}
+  {% endblock %}
+
+  {% block add_manager_modal %}
   {% endblock %}
 
   {% include 'includes/fixed-plugin.html' %}

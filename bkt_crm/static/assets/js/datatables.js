@@ -1,51 +1,84 @@
 $(document).ready(function() {
-    var dt_table = $('.datatable').dataTable({
+    var dt_table = $('.datatable').DataTable({
         language: dt_language,  // global variable defined in html
         lengthMenu: [[25, 50, 100, 200], [25, 50, 100, 200]],
-        order: [[ 0, "desc" ]],
+        order: [[ 1, "desc" ]],
         searching: false,
         columnDefs: [
             {
-             className: "center",
-             targets: [0, 1, 2, 3, 4, 5, 6, 7]
-            },
-            {
-                data: 'id',
+                data: null,
+                defaultContent: '',
+                orderable: false,
+                className: 'select-checkbox',
                 targets: [0]
             },
             {
+                data: 'id',
+                targets: [1],
+                orderable: true,
+            },
+            {
                 data: 'status',
-                targets: [1]
+                targets: [2],
+                orderable: true,
             },
             {
                 data: 'name',
-                targets: [2]
+                targets: [3],
+                orderable: true,
             },
             {
                 data: 'phone',
-                targets: [3]
+                targets: [4],
+                orderable: true,
             },
             {
                 data: 'country',
-                targets: [4]
+                targets: [5],
+                orderable: true,
             },
             {
                 data: 'email',
-                targets: [5]
+                targets: [6],
+                orderable: true,
             },
             {
                 data: 'created_date',
-                targets: [6]
+                targets: [7],
+                orderable: true,
             },
             {
                 data: 'manager',
-                targets: [7]
+                targets: [8],
+                orderable: true,
             },
         ],
-
+        select: {
+            style:    'multi',
+            selector: 'td:first-child'
+        },
         processing: true,
+        full_row_select: true,
         serverSide: true,
         stateSave: true,
         ajax: ADMIN_LIST_JSON_URL
+    });
+    dt_table.on("click", "th.select-checkbox", function() {
+    if ($("th.select-checkbox").hasClass("selected")) {
+        dt_table.rows().deselect();
+        $("th.select-checkbox").removeClass("selected");
+    } else {
+        dt_table.rows().select();
+        $("th.select-checkbox").addClass("selected");
+    }
+    }).on("select deselect", function() {
+    ("Some selection or deselection going on")
+    if (dt_table.rows({
+            selected: true
+        }).count() !== dt_table.rows().count()) {
+        $("th.select-checkbox").removeClass("selected");
+    } else {
+        $("th.select-checkbox").addClass("selected");
+    }
     });
 });

@@ -43,6 +43,7 @@
         console.log('id', data['id']);
 
         var rowNode = table.row.add(data).draw().node();
+        console.log('id', table.rows({selected: true}).data('id'));
         $(rowNode).css('color', 'red').animate({color: 'black'});
         if (data.type == 'data.new') {
         NewLead('top', 'left');

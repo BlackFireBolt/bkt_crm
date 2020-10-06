@@ -6,7 +6,7 @@ from .models import Lead
 class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
-        fields = ['name', 'email', 'phone', 'country', 'created_date', 'status', 'notes', 'manager']
+        fields = ['name', 'email', 'phone', 'country', 'time_zone', 'created_date', 'status', 'notes', 'manager']
         widgets = {
             'name': forms.TextInput(attrs={
                 'id': 'post_name',
@@ -23,6 +23,10 @@ class LeadForm(forms.ModelForm):
             }),
             'country': forms.TextInput(attrs={
                 'id': 'post_country',
+                'class': 'form-control',
+            }),
+            'time_zone': forms.TextInput(attrs={
+                'id': 'post_time_zone',
                 'class': 'form-control',
             }),
             'notes': forms.Textarea(attrs={
@@ -42,4 +46,24 @@ class LeadForm(forms.ModelForm):
                 'class': 'form-control',
                 'required': True
             }),
+        }
+
+
+class ImportForm(forms.Form):
+    name_field = forms.IntegerField(label='Номер столбца имен')
+    phone_field = forms.IntegerField(label='Номер столбца телефонов')
+    email_field = forms.IntegerField(label='Номер столбца электронных почт')
+    file_field = forms.FileField(label='Файл в формате CSV')
+
+
+class LeadManagerForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        fields = ['manager']
+        widgets = {
+            'manager': forms.Select(attrs={
+                'id': 'post_inner_manager',
+                'class': 'form-control',
+                'required': True
+            })
         }

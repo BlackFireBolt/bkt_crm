@@ -46,7 +46,9 @@ class Lead(models.Model):
     email = models.CharField(max_length=64, blank=True, unique=False, verbose_name='Email')
     phone = models.CharField(max_length=64, unique=False, verbose_name='Телефон')
     country = models.CharField(max_length=5, unique=False, blank=True, default="None", verbose_name='Страна')
-    created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True, verbose_name='Дата регистрации')
+    time_zone = models.CharField(max_length=10, unique=False, blank=True, default="None", verbose_name='Часовой пояс')
+    created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True,
+                                        verbose_name='Дата регистрации')
 
     # additional information-----------------
     OPTIONS = (
@@ -81,16 +83,20 @@ class Lead(models.Model):
         super(Lead, self).save(*args, **kwargs)
 
         # Send the opened channels
+        manager = None
+        if self.manager:
+            manager = self.manager.username
         content = {
             'id': self.pk,
             'name': self.name,
             'email': self.email,
             'phone': self.phone,
             'country': self.country,
+            'time_zone': self.time_zone,
             'created_date': json_serial(self.created_date),
             'status': self.status,
             'notes': self.notes,
-            'manager': self.manager.username,
+            'manager': manager,
             'type': notification_type,
             'time': time()
         }
@@ -99,7 +105,8 @@ class Lead(models.Model):
         if self.manager:
             broadcast(self.manager.id, content)
         else:
-            for user in User.groups.filter(name='Администратор'):
+            users = User.objects.filter(groups__name='Администратор')
+            for user in users:
                 broadcast(user.id, content)
 
     class Meta:

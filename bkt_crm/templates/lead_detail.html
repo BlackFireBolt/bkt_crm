@@ -37,6 +37,10 @@
                                     {{ lead_form.country.label_tag }}
                                     {{ lead_form.country }}
                                 </div>
+                                <div class="form-group col-md-6" id="time_zone">
+                                    {{ lead_form.time_zone.label_tag }}
+                                    {{ lead_form.time_zone }}
+                                </div>
                             </div>
                             <div class="form-group" id="email">
                                 {{ lead_form.email.label_tag }}
@@ -58,7 +62,7 @@
                             <button id="lead_change" data-id="{{ lead.pk }}" type="submit" class="btn btn-primary">
                                 Сохранить изменения
                             </button>
-                            {% if request.user|has_group:'Администратор' %}
+                            {% if user|has_group:'Администратор' %}
                             <a href="{% url 'lead:admin_lead_list' %}" class="btn btn-primary" type="button">Назад</a>
                             {% else %}
                             <a href="{% url 'lead:index' %}" class="btn btn-primary" type="button">Назад</a>
@@ -74,7 +78,7 @@
                                     {{ lead_form.status }}
                                 </div>
                             </div>
-                            {% if request.user|has_group:'Администратор' %}
+                            {% if user|has_group:'Администратор' %}
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Менеджер</h3>
