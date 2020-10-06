@@ -119,10 +119,13 @@ def add_lead(request):
         country = "None"
         name = request.POST.get('name')
         phone = request.POST.get('phone')
-        p = phonenumbers.parse(phone)
-        if phonenumbers.is_valid_number(p):
-            time_zone = timezone.time_zones_for_number(p)
-            country = phonenumbers.region_code_for_number(p)
+        try:
+            if phonenumbers.is_valid_number(phone):
+                p = phonenumbers.parse(phone)
+                time_zone = timezone.time_zones_for_number(p)
+                country = phonenumbers.region_code_for_number(p)
+        except (AttributeError, ValueError, Exception):
+            pass
         email = request.POST.get('email')
         created_date = request.POST.get('created_date')
         status = request.POST.get('status')
