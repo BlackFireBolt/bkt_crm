@@ -62,6 +62,8 @@ class ImportForm(forms.Form):
     name_field = forms.IntegerField(label='Номер столбца имен')
     phone_field = forms.IntegerField(label='Номер столбца телефонов')
     email_field = forms.IntegerField(label='Номер столбца электронных почт')
+    notes_field = forms.IntegerField(label='Номер столбца заметок')
+    agreements_field = forms.IntegerField(label='Номер столбца договоренностей')
     file_field = forms.FileField(label='Файл в формате CSV')
 
 

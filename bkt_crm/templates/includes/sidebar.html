@@ -68,7 +68,7 @@
     <div class="modal-dialog modal-dialog-top modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление холодных лидов из CSV файла</h5>
+                <h3 class="modal-title" id="exampleModalLabel">Добавление холодных лидов из CSV файла</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -76,7 +76,32 @@
             <form method="POST" id="add-import-form" enctype="multipart/form-data"
                   action="{% url 'lead:add-import' %}">
                 {% csrf_token %}
-                {{ import_form.as_p }}
+                <div class="modal-body">
+                    <div class="form-group" id="csv_name">
+                        {{ import_form.name_field.label_tag }}
+                        {{ import_form.name_field }}
+                    </div>
+                    <div class="form-group" id="csv_email">
+                        {{ import_form.email_field.label_tag }}
+                        {{ import_form.email_field }}
+                    </div>
+                    <div class="form-group" id="csv_phone">
+                        {{ import_form.phone_field.label_tag }}
+                        {{ import_form.phone_field }}
+                    </div>
+                    <div class="form-group" id="csv_notes">
+                        {{ import_form.notes_field.label_tag }}
+                        {{ import_form.notes_field }}
+                    </div>
+                    <div class="form-group" id="csv_agreements">
+                        {{ import_form.agreements_field.label_tag }}
+                        {{ import_form.agreements_field }}
+                    </div>
+                    <div id="csv_file">
+                        <label for="id_file_field">Файл в формате CSV:</label>
+                        <input type="file" name="file_field" required="" id="id_file_field">
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     <button id="add_import" type="submit" class="btn btn-primary">Добавить</button>

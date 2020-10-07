@@ -194,10 +194,16 @@ def add_import(request):
             email = "None"
             country = "None"
             time_zone = "None"
+            notes = ""
+            agreements = ""
             if int(request.POST.get('name_field')) != 0:
                 name = row[int(request.POST.get('name_field')) - 1]
             if int(request.POST.get('email_field')) != 0:
                 email = row[int(request.POST.get('email_field')) - 1]
+            if int(request.POST.get('notes_field')) != 0:
+                notes = row[int(request.POST.get('notes_field')) - 1]
+            if int(request.POST.get('agreements_field')) != 0:
+                agreements = row[int(request.POST.get('agreements_field')) - 1]
             phone = ''.join(filter(str.isdigit, row[int(request.POST.get('phone_field')) - 1]))
             try:
                 if phonenumbers.is_valid_number(phone):
@@ -206,7 +212,8 @@ def add_import(request):
                     country = phonenumbers.region_code_for_number(p)
             except (AttributeError, ValueError, Exception):
                 pass
-            lead = models.Lead(name=name, email=email, phone=phone, country=country, time_zone=time_zone)
+            lead = models.Lead(name=name, email=email, phone=phone, country=country, time_zone=time_zone,
+                               notes=notes, agreements=agreements)
             lead.save()
             response_data = {'result': 'Lead create successful', 'flag': 'new'}
         return HttpResponse(
