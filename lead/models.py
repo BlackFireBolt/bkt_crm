@@ -63,6 +63,8 @@ class Lead(models.Model):
     status = models.CharField(max_length=1, choices=OPTIONS, blank=True, default='n',
                               verbose_name='Статус')
     notes = models.TextField(blank=True, verbose_name='Комментарии')
+    agreements = models.TextField(blank=True, verbose_name='Договоренности')
+    source = models.CharField(max_length=64, blank=True, default='Холодный', verbose_name='Источник')
     manager = models.ForeignKey(User, null=True, on_delete=models.PROTECT, verbose_name='Менеджер')
 
     def get_absolute_url(self):

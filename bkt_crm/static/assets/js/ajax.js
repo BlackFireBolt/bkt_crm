@@ -74,6 +74,10 @@ function create_lead(url, lead_id=null){
             } else if (json.flag == 'error'){
                 ErrorLead('top', 'left', lead_id);
             }
+            var data = json.content;
+            var table = $('.datatable').DataTable();
+            var rowNode = table.row.add(data).draw().node();
+            $(rowNode).css('color', 'red').animate({color: 'black'});
         },
         error:function(xhr,errmsg,err) {
             console.log("error");

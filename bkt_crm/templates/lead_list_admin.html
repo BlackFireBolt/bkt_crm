@@ -69,7 +69,12 @@
             </div>
             <form method="POST" id="add-manager-form">
                 {% csrf_token %}
-                {{ manager_form.as_p }}
+                <div class="modal-body">
+                    <div class="form-group" id="inner_manager">
+                        {{ form.manager.label_tag }}
+                        {{ form.manager }}
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     <button id="add_manager" type="submit" class="btn btn-primary">Подтвердить</button>
