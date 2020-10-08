@@ -35,7 +35,7 @@ class LeadForm(forms.ModelForm):
                 'class': 'form-control',
             }),
             'source': forms.TextInput(attrs={
-                'id': 'post_name',
+                'id': 'post_source',
                 'class': 'form-control',
             }),
             'notes': forms.Textarea(attrs={
@@ -43,7 +43,7 @@ class LeadForm(forms.ModelForm):
                 'class': 'form-control',
             }),
             'agreements': forms.Textarea(attrs={
-                'id': 'post_notes',
+                'id': 'post_agreements',
                 'class': 'form-control',
             }),
             'created_date': forms.DateTimeInput(attrs={
@@ -70,7 +70,6 @@ class NoteForm(forms.ModelForm):
             'text': forms.Textarea(attrs={
                 'id': 'post_note',
                 'class': 'form-control',
-                'required': True,
                 'placeholder': 'Добавить'
             }),
         }

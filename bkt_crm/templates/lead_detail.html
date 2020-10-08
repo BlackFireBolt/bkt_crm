@@ -93,7 +93,7 @@
                                                 {{ lead_form.agreements.label_tag }}
                                                 {{ lead_form.agreements }}
                                             </div>
-                                            <button id="lead_change" data-id="{{ lead.pk }}" type="submit"
+                                            <button id="lead_change" data-id="{{ lead.pk }}" type="button"
                                                     class="btn btn-primary">
                                                 Сохранить изменения
                                             </button>
@@ -120,7 +120,7 @@
                                             </div>
                                             <form method="POST" id="add-note-form" action="{% url 'lead:add-note' %}">
                                                 {% csrf_token %}
-                                                <div class="form-group" id="text">
+                                                <div class="form-group" id="text_note">
                                                     {{ notes_form.text }}
                                                 </div>
                                                 <button id="add_note" data-id="{{ lead.id }}"

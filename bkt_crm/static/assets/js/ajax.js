@@ -6,7 +6,7 @@ $('#add-lead-form').on('submit', function(event){
     create_lead(url);
 });
 
-$('#change-lead-form').on('submit', function(event){
+$('#lead_change').click(function(event){
     event.preventDefault();
     console.log("form submitted");
     var lead_id = $('#lead_change').data("id"),
