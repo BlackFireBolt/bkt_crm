@@ -56,6 +56,7 @@ function create_lead(url, lead_id=null){
             leadpk: lead_id,
             name: $('#post_name').val(),
             email: $('#post_email').val(),
+            depozit: $('#post_depozit').val(),
             phone: $('#post_phone').val(),
             country: $('#post_country').val(),
             time_zone: $('#post_time_zone').val(),
@@ -120,5 +121,35 @@ $('#add_manager').click(function(event){
             location.reload();
         },
         error: function(response){}
+    });
+});
+
+$('#add_note').click(function (event){
+    event.preventDefault();
+    var post_note = $('#post_note').val(),
+        lead_id = $('#add_note').data("id");
+    console.log(post_note);
+    $.ajax({
+        url:"/add-note/",
+        type:"POST",
+        data:{
+            lead_id: lead_id,
+            note_data: post_note,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            $('#post_note').val('');
+            $('.notes').append(
+                '<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + json.note_created_date + '</p>' + '<p class="mb-auto">' + json.note_text +'</p>' +
+                '</div>' + '</div>'
+            )
+            console.log(json); // log the returned json to the console
+            console.log("success"); // another sanity check
+        },
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
     });
 });

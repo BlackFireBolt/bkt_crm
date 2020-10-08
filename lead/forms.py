@@ -1,13 +1,13 @@
 from django import forms
 
-from .models import Lead
+from .models import Lead, Note
 
 
 class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = ['name', 'email', 'phone', 'country', 'time_zone', 'created_date', 'status', 'notes', 'manager',
-                  'agreements', 'source']
+                  'agreements', 'source', 'depozit']
         widgets = {
             'name': forms.TextInput(attrs={
                 'id': 'post_name',
@@ -20,6 +20,10 @@ class LeadForm(forms.ModelForm):
             }),
             'email': forms.TextInput(attrs={
                 'id': 'post_email',
+                'class': 'form-control',
+            }),
+            'depozit': forms.TextInput(attrs={
+                'id': 'post_depozit',
                 'class': 'form-control',
             }),
             'country': forms.TextInput(attrs={
@@ -54,6 +58,20 @@ class LeadForm(forms.ModelForm):
                 'id': 'post_manager',
                 'class': 'form-control',
                 'required': True
+            }),
+        }
+
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['text', ]
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'id': 'post_note',
+                'class': 'form-control',
+                'required': True,
+                'placeholder': 'Добавить'
             }),
         }
 

@@ -1,3 +1,7 @@
 .table-responsive {
     overflow: auto;
 }
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #ececf0 !important;
+ }

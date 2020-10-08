@@ -8,7 +8,7 @@ import json, csv, phonenumbers
 from phonenumbers import timezone
 
 from . import models
-from .forms import LeadForm, ImportForm, LeadManagerForm
+from .forms import LeadForm, ImportForm, LeadManagerForm, NoteForm
 from braces.views import GroupRequiredMixin
 
 
@@ -65,7 +65,9 @@ class AdminListLead(GroupRequiredMixin, TemplateView):
 def lead_detail(request, pk):
     lead = get_object_or_404(models.Lead, pk=pk)
     lead_form = LeadForm(instance=lead)
-    context = {'lead': lead, 'lead_form': lead_form}
+    notes_form = NoteForm()
+    notes = models.Note.objects.all()
+    context = {'lead': lead, 'lead_form': lead_form, 'notes': notes, 'notes_form': notes_form}
     return render(request, 'lead_detail.html', context)
 
 
@@ -86,6 +88,7 @@ def add_lead_post(request):
 @login_required(login_url='/login/')
 def add_lead(request):
     if request.method == 'POST':
+        print(request.POST)
         time_zone = "None"
         country = "None"
         name = request.POST.get('name')
@@ -115,12 +118,12 @@ def add_lead(request):
             'id': lead.pk,
             'name': lead.name,
             'email': lead.email,
+            'depozit': lead.depozit,
             'phone': lead.phone,
             'country': lead.country,
             'time_zone': lead.time_zone,
             'created_date': models.json_serial(lead.created_date),
             'status': lead.status,
-            'notes': lead.notes,
             'manager': manager,
             'type': "data.new",
         }
@@ -144,6 +147,7 @@ def change_lead(request):
         phone = request.POST.get('phone')
         time_zone = request.POST.get('time_zone')
         email = request.POST.get('email')
+        depozit = request.POST.get('depozit')
         country = request.POST.get('country')
         created_date = request.POST.get('created_date')
         notes = request.POST.get('notes')
@@ -154,6 +158,7 @@ def change_lead(request):
         lead.name = name
         lead.phone = phone
         lead.email = email
+        lead.depozit = depozit
         lead.country = country
         lead.created_date = created_date
         lead.notes = notes
@@ -236,6 +241,31 @@ def add_manager(request):
             lead.manager = manager
             lead.save()
         response_data = {'result': 'success'}
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
+
+@login_required(login_url='/login/')
+def add_note(request):
+    if request.method == 'POST':
+        lead_id = request.POST.get('lead_id')
+        note_text = request.POST.get('note_data')
+        response_data = {}
+
+        note_object = models.Note(lead_id=lead_id, text=note_text)
+        note_object.save()
+
+        response_data['result'] = 'Create post successful!'
+        response_data['note_text'] = note_object.text
+        response_data['note_created_date'] = note_object.created_date.strftime('%Y-%m-%d %H:%M')
+
         return HttpResponse(
             json.dumps(response_data),
             content_type="application/json"

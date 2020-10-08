@@ -6,36 +6,44 @@ var dt_table = $('.datatable').dataTable({
         searching: false,
         columnDefs: [
             {
-             className: "center",
-             targets: [0, 1, 2, 3, 4, 5, 6]
-            },
-            {
                 data: 'id',
-                targets: [0]
+                targets: [0],
+                orderable: true,
             },
             {
                 data: 'status',
-                targets: [1]
+                targets: [1],
+                orderable: true,
             },
             {
                 data: 'name',
-                targets: [2]
+                targets: [2],
+                orderable: true,
             },
             {
                 data: 'phone',
-                targets: [3]
+                targets: [3],
+                orderable: true,
             },
             {
                 data: 'country',
-                targets: [4]
+                targets: [4],
+                orderable: true,
             },
             {
                 data: 'email',
-                targets: [5]
+                targets: [5],
+                orderable: true,
+            },
+            {
+                data: 'depozit',
+                targets: [6],
+                orderable: true,
             },
             {
                 data: 'created_date',
-                targets: [6]
+                targets: [7],
+                orderable: true,
             },
         ],
         processing: true,

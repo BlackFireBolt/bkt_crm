@@ -18,7 +18,11 @@
         {% if user.is_authenticated %}
         <ul class="nav">
             <li class="active ">
-                <a href="{% url 'lead:index' %}">
+                {% if user|has_group:'Администратор' %}
+                <a href="{% url 'lead:admin_lead_list' %}">
+                    {% else %}
+                    <a href="{% url 'lead:index' %}">
+                    {% endif %}
                     <i class="tim-icons icon-chart-pie-36"></i>
                     <p>Таблица лидов</p>
                 </a>

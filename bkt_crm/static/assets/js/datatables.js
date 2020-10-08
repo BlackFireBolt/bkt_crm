@@ -43,13 +43,18 @@ $(document).ready(function() {
                 orderable: true,
             },
             {
-                data: 'created_date',
+                data: 'depozit',
                 targets: [7],
                 orderable: true,
             },
             {
-                data: 'manager',
+                data: 'created_date',
                 targets: [8],
+                orderable: true,
+            },
+            {
+                data: 'manager',
+                targets: [9],
                 orderable: true,
             },
         ],

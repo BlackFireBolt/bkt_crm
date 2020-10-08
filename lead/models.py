@@ -49,7 +49,7 @@ class Lead(models.Model):
     time_zone = models.CharField(max_length=10, unique=False, blank=True, default="None", verbose_name='Часовой пояс')
     created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True,
                                         verbose_name='Дата регистрации')
-
+    depozit = models.CharField(max_length=12, blank=True, default='0 $', verbose_name='Депозит')
     # additional information-----------------
     OPTIONS = (
         ('n', 'Новый'),
@@ -93,12 +93,12 @@ class Lead(models.Model):
             'id': self.pk,
             'name': self.name,
             'email': self.email,
+            'depozit': self.depozit,
             'phone': self.phone,
             'country': self.country,
             'time_zone': self.time_zone,
             'created_date': json_serial(self.created_date),
             'status': self.status,
-            'notes': self.notes,
             'manager': manager,
             'type': notification_type,
             'time': time()
@@ -116,3 +116,14 @@ class Lead(models.Model):
         verbose_name = 'Лид'
         verbose_name_plural = 'Лиды'
         ordering = ['-created_date']
+
+
+class Note(models.Model):
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, verbose_name='Лид')
+    text = models.TextField(verbose_name="Заметка")
+    created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True,
+                                        verbose_name='Дата регистрации')
+
+    class Meta:
+        verbose_name = "Заметка"
+        verbose_name_plural = "Заметки"
