@@ -24,7 +24,7 @@
             </div>
             <div class="card-body">
                 <div id="main-table" class="table-responsive">
-                    <table class="datatable table">
+                    <table class="datatable table" width="100%">
                         <thead>
                         <th>{% trans "id" %}</th>
                         <th>{% trans "status" %}</th>
@@ -56,7 +56,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" id="add-lead-form-manager" action="{% url 'lead:add-lead' %}">
+            <form method="POST" id="add-lead-form" action="{% url 'lead:add-lead' %}">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-row">

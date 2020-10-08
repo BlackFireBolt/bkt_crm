@@ -58,7 +58,8 @@ class Lead(models.Model):
         ('p', 'Потенциал'),
         ('d', 'Не отвечает'),
         ('c', 'Клиент'),
-        ('d', 'Дубликат')
+        ('d', 'Дубликат'),
+        ('g', 'Горячий')
     )
     status = models.CharField(max_length=1, choices=OPTIONS, blank=True, default='n',
                               verbose_name='Статус')
