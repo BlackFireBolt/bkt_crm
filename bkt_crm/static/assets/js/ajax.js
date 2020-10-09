@@ -63,7 +63,6 @@ function create_lead(url, lead_id=null){
             created_date: $('#post_created_date').val(),
             manager: $('#post_manager').val(),
 
-            notes: $('#post_notes').val(),
             status: $('#post_status').val(),
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'

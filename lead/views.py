@@ -150,7 +150,6 @@ def change_lead(request):
         depozit = request.POST.get('depozit')
         country = request.POST.get('country')
         created_date = request.POST.get('created_date')
-        notes = request.POST.get('notes')
         status = request.POST.get('status')
         manager_id = request.POST.get('manager')
 
@@ -161,7 +160,6 @@ def change_lead(request):
         lead.depozit = depozit
         lead.country = country
         lead.created_date = created_date
-        lead.notes = notes
         lead.status = status
         managerold_id = None
         if lead.manager is not None:

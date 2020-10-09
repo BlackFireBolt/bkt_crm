@@ -6,8 +6,8 @@ from .models import Lead, Note
 class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
-        fields = ['name', 'email', 'phone', 'country', 'time_zone', 'created_date', 'status', 'notes', 'manager',
-                  'agreements', 'source', 'depozit']
+        fields = ['name', 'email', 'phone', 'country', 'time_zone', 'created_date', 'status', 'manager',
+                  'source', 'depozit']
         widgets = {
             'name': forms.TextInput(attrs={
                 'id': 'post_name',
@@ -36,14 +36,6 @@ class LeadForm(forms.ModelForm):
             }),
             'source': forms.TextInput(attrs={
                 'id': 'post_source',
-                'class': 'form-control',
-            }),
-            'notes': forms.Textarea(attrs={
-                'id': 'post_notes',
-                'class': 'form-control',
-            }),
-            'agreements': forms.Textarea(attrs={
-                'id': 'post_agreements',
                 'class': 'form-control',
             }),
             'created_date': forms.DateTimeInput(attrs={
