@@ -49,7 +49,7 @@ class AdminListLeadJson(GroupRequiredMixin, BaseDatatableView):
         return models.Lead.objects.exclude(status='d')
 
     def filter_queryset(self, qs):
-        query = self.request.GET.get('search[value]', None)
+        query = self.request.GET.get(u'search[value]', None)
         if query:
             search_vector = SearchVector('id', 'name', 'phone', 'email', 'depozit', 'country', 'created_date', 'status',
                                          'manager')

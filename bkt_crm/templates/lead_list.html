@@ -81,6 +81,7 @@
                             $('#post_created_date').datetimepicker({
                                 format:'Y-m-d H:i:s',
                             });
+
                         </script>
                     </div>
                     <div class="form-group" id="status">
@@ -112,29 +113,33 @@
         // translations for datatables
 
         var dt_language = {
-            "emptyTable":     "{% trans "No data available in table" %}",
-            "info":           "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
-            "infoEmpty":      "{% trans "Showing 0 to 0 of 0 entries" %}",
-            "infoFiltered":   "{% trans "(filtered from _MAX_ total entries)" %}",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "{% trans "Show _MENU_ entries" %}",
-            "loadingRecords": "{% trans "Loading..." %}",
-            "processing":     "{% trans "Processing..." %}",
-            "search":         "{% trans "Search:" %}",
-            "zeroRecords":    "{% trans "No matching records found" %}",
+            "processing": "Подождите...",
+            "search": "Поиск:",
+            "lengthMenu": "Показать _MENU_ записей",
+            "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+            "infoEmpty": "Записи с 0 до 0 из 0 записей",
+            "infoFiltered": "(отфильтровано из _MAX_ записей)",
+            "infoPostFix": "",
+            "loadingRecords": "Загрузка записей...",
+            "zeroRecords": "Записи отсутствуют.",
+            "emptyTable": "В таблице отсутствуют данные",
             "paginate": {
-                "first":      "{% trans "First" %}",
-                "last":       "{% trans "Last" %}",
-                "next":       "{% trans "Next" %}",
-                "previous":   "{% trans "Previous" %}"
+                "first": "Первая",
+                "previous": "Предыдущая",
+                "next": "Следующая",
+                "last": "Последняя"
             },
             "aria": {
-                "sortAscending":  "{% trans ": activate to sort column ascending" %}",
-                "sortDescending": "{% trans ": activate to sort column descending" %}"
+                "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                "sortDescending": ": активировать для сортировки столбца по убыванию"
+            },
+            "select": {
+                "rows": {
+                    "_": "Выбрано записей: %d",
+                    "0": "Кликните по записи для выбора",
+                    "1": "Выбрана одна запись"
+                }
             }
         }
-
-
 </script>
 {% endblock javascripts %}
