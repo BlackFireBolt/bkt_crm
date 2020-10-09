@@ -49,6 +49,31 @@ var dt_table = $('.datatable').dataTable({
         processing: true,
         serverSide: true,
         stateSave: true,
+        createdRow: function( row, data, dataIndex ) {
+                             switch($(data['status']).text()){
+                                    case 'Новый':
+                                            $(row).addClass('table_new');
+                                            break;
+                                    case 'Аут':
+                                            $(row).addClass('table_aut');
+                                            break;
+                                    case 'Не интересно':
+                                            $(row).addClass('table_notinteres');
+                                            break;
+                                    case 'Потенциал':
+                                            $(row).addClass('table_potential');
+                                            break;
+                                    case 'Не отвечает':
+                                            $(row).addClass('table_na');
+                                            break;
+                                    case 'Клиент':
+                                            $(row).addClass('table_client');
+                                            break;
+                                    case 'Горячий':
+                                            $(row).addClass('table_hot');
+                                            break;
+                            }
+        },
         ajax: LIST_JSON_URL
     });
     });

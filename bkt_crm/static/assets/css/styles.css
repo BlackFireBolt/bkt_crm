@@ -5,3 +5,26 @@
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
     background-color: #ececf0 !important;
  }
+
+ /* table colors */
+tr.table_new{
+    background-color: rgba(0, 230, 46, 0.49) !important;
+}
+tr.table_aut{
+    background-color: rgba(230, 226, 0, 0.49) !important;
+}
+tr.table_notinteres {
+    background-color: rgba(0, 8, 230, 0.49) !important;
+}
+tr.table_potential{
+    background-color :rgba(193, 5, 255, 0.49) !important;
+}
+tr.table_na{
+    background-color: rgba(230, 0, 0, 0.49) !important;
+}
+tr.table_client {
+    background-color: rgba(0, 230, 210, 0.49) !important;
+}
+tr.table_hot{
+    background-color: rgba(255, 68, 5, 0.49) !important;
+}
