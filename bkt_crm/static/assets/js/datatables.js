@@ -69,25 +69,25 @@ $(document).ready(function() {
         createdRow: function( row, data, dataIndex ) {
                              switch($(data['status']).text()){
                                     case 'Новый':
-                                            $("td:eq(0)",row).addClass('table_new');
+                                            $("td:eq(1)",row).addClass('table_new');
                                             break;
                                     case 'Аут':
-                                            $("td:eq(0)",row).addClass('table_aut');
+                                            $("td:eq(1)",row).addClass('table_aut');
                                             break;
                                     case 'Не интересно':
-                                            $("td:eq(0)",row).addClass('table_notinteres');
+                                            $("td:eq(1)",row).addClass('table_notinteres');
                                             break;
                                     case 'Потенциал':
-                                            $("td:eq(0)",row).addClass('table_potential');
+                                            $("td:eq(1)",row).addClass('table_potential');
                                             break;
                                     case 'Не отвечает':
-                                            $("td:eq(0)",row).addClass('table_na');
+                                            $("td:eq(1)",row).addClass('table_na');
                                             break;
                                     case 'Клиент':
-                                            $("td:eq(0)",row).addClass('table_client');
+                                            $("td:eq(1)",row).addClass('table_client');
                                             break;
                                     case 'Горячий':
-                                            $("td:eq(0)",row).addClass('table_hot');
+                                            $("td:eq(1)",row).addClass('table_hot');
                                             break;
                             }
         },
