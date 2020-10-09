@@ -3,7 +3,7 @@ $(document).ready(function() {
         language: dt_language,  // global variable defined in html
         lengthMenu: [[25, 50, 100, 200], [25, 50, 100, 200]],
         order: [[ 1, "desc" ]],
-        searching: false,
+        searching: true,
         columnDefs: [
             {
                 data: null,

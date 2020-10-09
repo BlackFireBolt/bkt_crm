@@ -6,6 +6,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.views.generic import TemplateView
 import json, csv, phonenumbers
 from phonenumbers import timezone
+from django.contrib.postgres.search import SearchVector
 
 from . import models
 from .forms import LeadForm, ImportForm, LeadManagerForm, NoteForm
@@ -46,6 +47,14 @@ class AdminListLeadJson(GroupRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return models.Lead.objects.exclude(status='d')
+
+    def filter_queryset(self, qs):
+        query = self.request.GET.get('search[value]', None)
+        if query:
+            search_vector = SearchVector('id', 'name', 'phone', 'email', 'depozit', 'country', 'created_date', 'status',
+                                         'manager')
+            qs = models.Lead.objects.annotate(search=search_vector).filter(search=query).exclude(status='d')
+        return qs
 
 
 class AdminListLead(GroupRequiredMixin, TemplateView):
@@ -121,7 +130,6 @@ def add_lead(request):
             'depozit': lead.depozit,
             'phone': lead.phone,
             'country': lead.country,
-            'time_zone': lead.time_zone,
             'created_date': models.json_serial(lead.created_date),
             'status': lead.status,
             'manager': manager,
@@ -273,3 +281,48 @@ def add_note(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+
+class SearchJson(LoginRequiredMixin, BaseDatatableView):
+    model = models.Lead
+    login_url = '/login/'
+
+    columns = ['id', 'name', 'email', 'phone', 'country', 'created_date', 'status']
+
+    def get_initial_queryset(self):
+        return models.Lead.objects.exclude(status='d').filter(manager=self.request.user.id)
+
+
+class Search(LoginRequiredMixin, TemplateView):
+    template_name = 'lead_list.html'
+    login_url = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(Search, self).get_context_data(**kwargs)
+        context['form'] = LeadForm()
+        return context
+
+
+class AdminSearchJson(GroupRequiredMixin, BaseDatatableView):
+    model = models.Lead
+    login_url = '/login/'
+    group_required = [u'Администратор', u'admin']
+
+    def get_initial_queryset(self):
+        query = self.request.GET.get('q')
+        search_vector = SearchVector()
+        object_list = models.Lead.objects.exclude(status='d').annotate(search=search_vector).filter(search=query)
+        return object_list
+
+
+class AdminSearch(GroupRequiredMixin, TemplateView):
+    template_name = 'lead_list_admin.html'
+    login_url = '/login/'
+    group_required = [u'Администратор', u'admin']
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminSearch, self).get_context_data(**kwargs)
+        context['form'] = LeadForm()
+        context['import_form'] = ImportForm()
+        context['manager_form'] = LeadManagerForm()
+        return context

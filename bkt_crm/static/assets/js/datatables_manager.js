@@ -3,7 +3,7 @@ var dt_table = $('.datatable').dataTable({
         language: dt_language,  // global variable defined in html
         lengthMenu: [[25, 50, 100, 200], [25, 50, 100, 200]],
         order: [[ 0, "desc" ]],
-        searching: false,
+        searching: true,
         columnDefs: [
             {
                 data: 'id',

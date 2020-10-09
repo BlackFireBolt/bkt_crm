@@ -94,7 +94,6 @@ class Lead(models.Model):
             'depozit': self.depozit,
             'phone': self.phone,
             'country': self.country,
-            'time_zone': self.time_zone,
             'created_date': json_serial(self.created_date),
             'status': self.status,
             'manager': manager,
