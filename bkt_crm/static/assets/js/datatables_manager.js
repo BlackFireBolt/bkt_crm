@@ -52,25 +52,25 @@ var dt_table = $('.datatable').dataTable({
         createdRow: function( row, data, dataIndex ) {
                              switch($(data['status']).text()){
                                     case 'Новый':
-                                            $(row).addClass('table_new');
+                                            $("td:eq(0)",row).addClass('table_new');
                                             break;
                                     case 'Аут':
-                                            $(row).addClass('table_aut');
+                                            $("td:eq(0)",row).addClass('table_aut');
                                             break;
                                     case 'Не интересно':
-                                            $(row).addClass('table_notinteres');
+                                            $("td:eq(0)",row).addClass('table_notinteres');
                                             break;
                                     case 'Потенциал':
-                                            $(row).addClass('table_potential');
+                                            $("td:eq(0)",row).addClass('table_potential');
                                             break;
                                     case 'Не отвечает':
-                                            $(row).addClass('table_na');
+                                            $("td:eq(0)",row).addClass('table_na');
                                             break;
                                     case 'Клиент':
-                                            $(row).addClass('table_client');
+                                            $("td:eq(0)",row).addClass('table_client');
                                             break;
                                     case 'Горячий':
-                                            $(row).addClass('table_hot');
+                                            $("td:eq(0)",row).addClass('table_hot');
                                             break;
                             }
         },

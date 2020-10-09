@@ -7,24 +7,24 @@
  }
 
  /* table colors */
-tr.table_new{
+td.table_new{
     background-color: #ffffff !important;
 }
-tr.table_aut{
+td.table_aut{
     background-color: rgba(194, 0, 129, 0.49) !important;
 }
-tr.table_notinteres {
+td.table_notinteres {
     background-color: rgba(214, 0, 0, 0.49) !important;
 }
-tr.table_potential{
+td.table_potential{
     background-color: rgba(195, 230, 0, 0.49) !important;
 }
-tr.table_na{
+td.table_na{
     background-color: rgba(4, 0, 214, 0.49) !important;
 }
-tr.table_client {
+td.table_client {
     background-color: rgba(25, 214, 0, 0.49) !important;
 }
-tr.table_hot{
+t.table_hot{
     background-color: rgba(214, 100, 0, 0.49) !important;
 }
