@@ -7,9 +7,12 @@ from django.views.generic import TemplateView
 import json, csv, phonenumbers
 from phonenumbers import timezone
 from django.contrib.postgres.search import SearchVector
+import logging
+
+logger = logging.getLogger(__name__)
 
 from . import models
-from .forms import LeadForm, ImportForm, LeadManagerForm, NoteForm
+from .forms import LeadForm, ImportForm, LeadManagerForm, NoteForm, NotificationForm
 from braces.views import GroupRequiredMixin
 
 
@@ -75,8 +78,11 @@ def lead_detail(request, pk):
     lead = get_object_or_404(models.Lead, pk=pk)
     lead_form = LeadForm(instance=lead)
     notes_form = NoteForm()
-    notes = models.Note.objects.all()
-    context = {'lead': lead, 'lead_form': lead_form, 'notes': notes, 'notes_form': notes_form}
+    notification_form = NotificationForm()
+    notes = models.Note.objects.filter(lead=pk)
+    notifications = models.Notification.objects.filter(lead=pk).order_by('-id')[:3][::-1]
+    context = {'lead': lead, 'lead_form': lead_form, 'notes': notes, 'notes_form': notes_form,
+               'notification_form': notification_form, 'notifications': notifications}
     return render(request, 'lead_detail.html', context)
 
 
@@ -163,7 +169,8 @@ def change_lead(request):
 
         lead = models.Lead.objects.get(pk=leadpk)
         lead.name = name
-        lead.phone = phone
+        if request.user.groups.filter(name='Администратор').exists():
+            lead.phone = phone
         lead.email = email
         lead.depozit = depozit
         lead.country = country
@@ -205,8 +212,6 @@ def add_import(request):
             email = "None"
             country = "None"
             time_zone = "None"
-            notes = ""
-            agreements = ""
             if int(request.POST.get('name_field')) != 0:
                 name = row[int(request.POST.get('name_field')) - 1]
             if int(request.POST.get('email_field')) != 0:
@@ -223,8 +228,7 @@ def add_import(request):
                     country = phonenumbers.region_code_for_number(p)
             except (AttributeError, ValueError, Exception):
                 pass
-            lead = models.Lead(name=name, email=email, phone=phone, country=country, time_zone=time_zone,
-                               notes=notes, agreements=agreements)
+            lead = models.Lead(name=name, email=email, phone=phone, country=country, time_zone=time_zone)
             lead.save()
             response_data = {'result': 'Lead create successful', 'flag': 'new'}
         return HttpResponse(
@@ -283,46 +287,28 @@ def add_note(request):
         )
 
 
-class SearchJson(LoginRequiredMixin, BaseDatatableView):
-    model = models.Lead
-    login_url = '/login/'
+@login_required(login_url='/login/')
+def add_notification(request):
+    if request.method == 'POST':
+        lead_id = request.POST.get('lead_id')
+        notification_data = request.POST.get('notification_data')
+        time = request.POST.get('time')
+        manager = request.user
+        response_data = {}
 
-    columns = ['id', 'name', 'email', 'phone', 'country', 'created_date', 'status']
+        notification_object = models.Notification(lead_id=lead_id, text=notification_data, time=time, manager=manager)
+        notification_object.save()
 
-    def get_initial_queryset(self):
-        return models.Lead.objects.exclude(status='d').filter(manager=self.request.user.id)
+        response_data['result'] = 'Create post successful!'
+        response_data['notification_text'] = notification_object.text
+        response_data['notification_time'] = notification_object.time
 
-
-class Search(LoginRequiredMixin, TemplateView):
-    template_name = 'lead_list.html'
-    login_url = '/login/'
-
-    def get_context_data(self, **kwargs):
-        context = super(Search, self).get_context_data(**kwargs)
-        context['form'] = LeadForm()
-        return context
-
-
-class AdminSearchJson(GroupRequiredMixin, BaseDatatableView):
-    model = models.Lead
-    login_url = '/login/'
-    group_required = [u'Администратор', u'admin']
-
-    def get_initial_queryset(self):
-        query = self.request.GET.get('q')
-        search_vector = SearchVector()
-        object_list = models.Lead.objects.exclude(status='d').annotate(search=search_vector).filter(search=query)
-        return object_list
-
-
-class AdminSearch(GroupRequiredMixin, TemplateView):
-    template_name = 'lead_list_admin.html'
-    login_url = '/login/'
-    group_required = [u'Администратор', u'admin']
-
-    def get_context_data(self, **kwargs):
-        context = super(AdminSearch, self).get_context_data(**kwargs)
-        context['form'] = LeadForm()
-        context['import_form'] = ImportForm()
-        context['manager_form'] = LeadManagerForm()
-        return context
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

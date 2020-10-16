@@ -40,12 +40,17 @@
   <!-- CSS Files -->
   <link href="{% static 'assets/css/black-dashboard.css' %}" rel="stylesheet" />
   <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="{% static 'assets/demo/demo.css' %}" rel="stylesheet" />
-
+  <!-- calendar -->
+  <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.css' %}" />
+  <!-- Optional Themes -->
+  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.midnight-blue.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.orange-coral.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.royal-navy.css' %}" />
+  <!-- JavaScript -->
   <!-- Specific Page CSS goes HERE  -->
 
-  <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>

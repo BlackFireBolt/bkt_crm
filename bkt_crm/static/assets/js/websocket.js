@@ -4,15 +4,13 @@
             var socket = new ReconnectingWebSocket(ws_path);
 
     var NewLead = function(from, align){
-    	color = Math.floor((Math.random() * 4) + 1);
-
     	$.notify({
         	icon: "tim-icons icon-bell-55",
         	message: "Добавлен новый лид."
 
         },{
-            type: type[color],
-            timer: 8000,
+            type: 'info',
+            timer: 0,
             placement: {
                 from: from,
                 align: align
@@ -20,15 +18,27 @@
         });
 	}
 	var UpdateLead = function(from, align, id){
-    	color = Math.floor((Math.random() * 4) + 1);
-
     	$.notify({
         	icon: "tim-icons icon-bell-55",
         	message: "Лид номер " + id + " обновлен."
 
         },{
-            type: type[color],
-            timer: 8000,
+            type: 'info',
+            timer: 0,
+            placement: {
+                from: from,
+                align: align
+            }
+        });
+	}
+	var NotifyLead = function(from, align, lead, text){
+    	$.notify({
+        	icon: "tim-icons icon-bell-55",
+        	message: "Лид номер " + lead + ", напоминание: " + text,
+
+        },{
+            type: 'warning',
+            timer: 0,
             placement: {
                 from: from,
                 align: align
@@ -37,17 +47,30 @@
 	}
     socket.onmessage = function(event) {
         var data = JSON.parse(event.data);
-        console.log('data', data);
-        var table = $('.datatable').DataTable();
-        console.log('id', data.id);
-        console.log('id', data['id']);
 
-        var rowNode = table.row.add(data).draw().node();
-        console.log('id', table.rows({selected: true}).data('id'));
-        $(rowNode).css('color', 'red').animate({color: 'black'});
-        if (data.type == 'data.new') {
-        NewLead('top', 'left');
-        } else if (data.type == 'data.update') {
-        UpdateLead('top', 'left', data.id);
+        var table = $('.datatable').DataTable();
+
+        if (data.type == 'data.notification'){
+            console.log('task', data);
+            NotifyLead('top', 'left', data.lead, data.text);
+	        var options = {
+	            title: "BKT crm",
+	            options: {
+	            body: "Лид номер " + data.lead + ", напоминание: \n" + data.text,
+	            icon: "https://bkt-crm.tk/static/assets/img/favicon.ico",
+	            lang: 'ru-RU',
+	            }
+	        };
+	        $("#easyNotify").easyNotify(options);
         }
+        else {
+            var rowNode = table.row.add(data).draw().node();
+            console.log('id', table.rows({selected: true}).data('id'));
+            $(rowNode).css('color', 'red').animate({color: 'black'});
+            if (data.type == 'data.new') {
+                NewLead('top', 'left');
+            } else if (data.type == 'data.update') {
+                        UpdateLead('top', 'left', data.id);
+                    }
+            }
     };

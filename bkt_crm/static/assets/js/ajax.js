@@ -15,15 +15,13 @@ $('#lead_change').click(function(event){
 });
 
 var UpdateLead = function(from, align, id){
-    	color = Math.floor((Math.random() * 4) + 1);
-
     	$.notify({
         	icon: "tim-icons icon-bell-55",
         	message: "Лид номер " + id + " обновлен."
 
         },{
-            type: type[color],
-            timer: 8000,
+            type: 'info',
+            timer: 0,
             placement: {
                 from: from,
                 align: align
@@ -32,15 +30,13 @@ var UpdateLead = function(from, align, id){
 	}
 
 var ErrorLead = function(from, align, id){
-    	color = Math.floor((Math.random() * 4) + 1);
-
     	$.notify({
         	icon: "tim-icons icon-bell-55",
         	message: " При обновлении лида номер " + id + " обнаружена ошибка."
 
         },{
-            type: type[color],
-            timer: 8000,
+            type: 'danger',
+            timer: 0,
             placement: {
                 from: from,
                 align: align
@@ -125,15 +121,14 @@ $('#add_manager').click(function(event){
 
 $('#add_note').click(function (event){
     event.preventDefault();
-    var post_note = $('#post_note').val(),
-        lead_id = $('#add_note').data("id");
+    var lead_id = $('#add_note').data("id");
     console.log(post_note);
     $.ajax({
         url:"/add-note/",
         type:"POST",
         data:{
             lead_id: lead_id,
-            note_data: post_note,
+            note_data: post_note = $('#post_note').val(),
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'
         },
@@ -141,6 +136,36 @@ $('#add_note').click(function (event){
             $('#post_note').val('');
             $('.notes').append(
                 '<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + json.note_created_date + '</p>' + '<p class="mb-auto">' + json.note_text +'</p>' +
+                '</div>' + '</div>'
+            )
+            console.log(json); // log the returned json to the console
+            console.log("success"); // another sanity check
+        },
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+});
+
+$('#add_notification').click(function (event){
+    event.preventDefault();
+    var lead_id = $('#add_notification').data("id");
+    $.ajax({
+        url:"/add-notification/",
+        type:"POST",
+        data:{
+            lead_id: lead_id,
+            notification_data: $('#post_notification').val(),
+            time: $('#post_time').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            $('#post_notification').val('');
+            $('#post_time').val('');
+            $('.notifications').append(
+                '<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + 'Время: ' + json.notification_time + '</p>' + '<p class="mb-auto">' + 'Текст: ' + json.notification_text +'</p>' +
                 '</div>' + '</div>'
             )
             console.log(json); // log the returned json to the console

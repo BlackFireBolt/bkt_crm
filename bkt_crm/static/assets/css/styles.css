@@ -6,6 +6,11 @@
     background-color: #ececf0 !important;
  }
 
+.modal-lx {
+    max-width: 1350px;
+    margin: -3.25rem auto;
+}
+
  /* table colors */
 td.table_new{
     background-color: #ffffff !important;

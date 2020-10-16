@@ -81,8 +81,6 @@
                                     $('#post_created_date').datetimepicker({
                                         format:'Y-m-d H:i:s',
                                      });
-
-
                                                 </script>
                                             </div>
                                             <button id="lead_change" data-id="{{ lead.pk }}" type="button"
@@ -99,16 +97,14 @@
                                         </div>
                                         <div class="tab-pane" id="notes_tab">
                                             <div class="notes">
-                                            {% for note in notes %}
-                                            {% if note.lead_id == lead.pk %}
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <p class="mb-auto">{{ note.created_date|date:'Y-m-d H:i' }}</p>
-                                                    <p class="mb-auto">{{ note.text }}</p>
+                                                {% for note in notes %}
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <p class="mb-auto">{{ note.created_date|date:'Y-m-d H:i' }}</p>
+                                                        <p class="mb-auto">{{ note.text }}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            {% endif %}
-                                            {% endfor %}
+                                                {% endfor %}
                                             </div>
                                             <form method="POST" id="add-note-form" action="{% url 'lead:add-note' %}">
                                                 {% csrf_token %}
@@ -130,7 +126,6 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Статус</h3>
-
                                 </div>
                                 <div class="card-body">
                                     {{ lead_form.status }}
@@ -149,6 +144,42 @@
                             {% endif %}
                             <a href="tel:{{ lead.phone }}" class="btn btn-info btn-round" type="button"><i
                                     class="tim-icons icon-headphones"></i> Позвонить</a>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Напоминания</h3>
+
+                                </div>
+                                <div class="card-body">
+                            <div class="notifications">
+                                {% for notification in notifications %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="mb-auto">Время: {{ notification.time|date:'Y-m-d H:i' }}</p>
+                                        <p class="mb-auto">Текст: {{ notification.text }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <form method="POST" id="add-notification-form" action="{% url 'lead:add-note' %}">
+                                {% csrf_token %}
+                                <div class="form-group" id="notification_time">
+                                                {{ notification_form.time }}
+                                                <script>
+                                    $('#post_time').datetimepicker({
+                                        format:'Y-m-d H:i:s',
+                                     });
+                                                </script>
+                                            </div>
+                                <div class="form-group" id="text_notification">
+                                    {{ notification_form.text }}
+                                </div>
+                                <button id="add_notification" data-id="{{ lead.id }}"
+                                        type="button" class="btn btn-primary"><i
+                                        class="now-ui-icons location_bookmark"></i> Добавить напоминание
+                                </button>
+                            </form>
+                                     </div>
+                            </div>
                         </div>
                     </div>
                 </form>

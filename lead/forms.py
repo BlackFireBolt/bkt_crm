@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Lead, Note
+from .models import Lead, Note, Notification
 
 
 class LeadForm(forms.ModelForm):
@@ -63,6 +63,26 @@ class NoteForm(forms.ModelForm):
                 'id': 'post_note',
                 'class': 'form-control',
                 'placeholder': 'Добавить'
+            }),
+        }
+
+
+class NotificationForm(forms.ModelForm):
+    class Meta:
+        model = Notification
+        fields = ['text', 'time']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'id': 'post_notification',
+                'class': 'form-control',
+                'placeholder': 'Текст',
+                'required': True
+            }),
+            'time': forms.DateTimeInput(attrs={
+                'id': 'post_time',
+                'class': 'form-control',
+                'placeholder': 'Дата и время',
+                'required': True
             }),
         }
 

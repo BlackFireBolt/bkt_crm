@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Lead, Note
+from .models import Lead, Note, Notification
 
 
 class LeadAdmin(admin.ModelAdmin):
@@ -13,5 +13,6 @@ class NoteAdmin(admin.ModelAdmin):
 
 admin.site.register(Lead, LeadAdmin)
 admin.site.register(Note, NoteAdmin)
+admin.site.register(Notification)
 
 admin.site.site_header = 'BKT'

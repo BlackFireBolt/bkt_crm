@@ -2,12 +2,12 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 import json
-from asgiref.sync import async_to_sync
 from time import time
-import channels.layers
-from django.conf import settings
 import logging
 from datetime import date, datetime
+
+from .tasks import notification
+from .utilities import broadcast
 
 logger = logging.getLogger(__name__)
 
@@ -26,18 +26,6 @@ class UserEncoder(json.JSONEncoder):
         if isinstance(obj, User):
             return obj.__dict__
         return json.JSONEncoder.default(self, obj)
-
-
-def broadcast(user, content):
-    # Add condition if user has subscribed in Redis
-    channel_layer = channels.layers.get_channel_layer()
-    logger.info("sending socket to : " + 'realtime_' + str(user))
-    logger.info("Content : " + str(content))
-    async_to_sync(channel_layer.group_send)(
-        '{}'.format(user), {
-            "type": 'data_send',
-            "content": json.dumps(content),
-        })
 
 
 class Lead(models.Model):
@@ -124,3 +112,25 @@ class Note(models.Model):
     class Meta:
         verbose_name = "Заметка"
         verbose_name_plural = "Заметки"
+
+
+class Notification(models.Model):
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Менеджер')
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, verbose_name='Лид')
+    time = models.DateTimeField(unique=False, verbose_name='Дата и время')
+    text = models.TextField(verbose_name='Текст')
+
+    def save(self, *args, **kwargs):
+        logger.info("Saving new notification")
+        super(Notification, self).save(*args, **kwargs)
+        content = {
+            'text': self.text,
+            'lead': self.lead.id,
+            'manager': self.manager.id
+        }
+
+        notification.apply_async(kwargs=content, eta=self.time)
+
+    class Meta:
+        verbose_name = 'Напоминание'
+        verbose_name_plural = 'Напоминания'

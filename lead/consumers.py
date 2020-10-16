@@ -1,40 +1,9 @@
-import json
-from channels.generic.websocket import WebsocketConsumer
-from channels.consumer import SyncConsumer
-from django.conf import settings
-from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 import logging
 from time import time
 from .exceptions import ClientError
 
 logger = logging.getLogger(__name__)
-
-
-class LeadConsumer(SyncConsumer):
-    def websocket_connect(self, event):
-        self.send({
-            'type': 'websocket.accept'
-        })
-
-        # Join ticks group
-        async_to_sync(self.channel_layer.group_add)(
-            settings.TICKS_GROUP_NAME,
-            self.channel_name
-        )
-
-    def websocket_disconnect(self, event):
-        # Leave ticks group
-        async_to_sync(self.channel_layer.group_discard)(
-            settings.TICKS_GROUP_NAME,
-            self.channel_name
-        )
-
-    def new_ticks(self, event):
-        self.send({
-            'type': 'websocket.send',
-            'text': event['content'],
-        })
 
 
 class DataConsumer(AsyncJsonWebsocketConsumer):
