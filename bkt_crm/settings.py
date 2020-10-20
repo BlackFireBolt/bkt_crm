@@ -157,8 +157,11 @@ STATICFILES_DIRS = (
 
 # celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-
+result_backend = 'db+sqlite:///results.db'
+accept_content = ['application/json']
+result_serializer = 'json'
+task_serializer = 'json'
+task_acks_late = True
+worker_prefetch_multiplier = 1
+enable_utc = False
+timezone = 'Europe/Minsk'

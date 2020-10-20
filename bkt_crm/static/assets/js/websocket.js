@@ -48,8 +48,6 @@
     socket.onmessage = function(event) {
         var data = JSON.parse(event.data);
 
-        var table = $('.datatable').DataTable();
-
         if (data.type == 'data.notification'){
             console.log('task', data);
             NotifyLead('top', 'left', data.lead, data.text);
@@ -64,6 +62,7 @@
 	        $("#easyNotify").easyNotify(options);
         }
         else {
+            var table = $('.datatable').DataTable();
             var rowNode = table.row.add(data).draw().node();
             console.log('id', table.rows({selected: true}).data('id'));
             $(rowNode).css('color', 'red').animate({color: 'black'});

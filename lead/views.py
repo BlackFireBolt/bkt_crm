@@ -292,7 +292,7 @@ def add_notification(request):
     if request.method == 'POST':
         lead_id = request.POST.get('lead_id')
         notification_data = request.POST.get('notification_data')
-        time = request.POST.get('time')
+        time = models.parse_datetime(request.POST.get('time'))
         manager = request.user
         response_data = {}
 
@@ -301,7 +301,7 @@ def add_notification(request):
 
         response_data['result'] = 'Create post successful!'
         response_data['notification_text'] = notification_object.text
-        response_data['notification_time'] = notification_object.time
+        response_data['notification_time'] = notification_object.time.strftime('%Y-%m-%d %H:%M')
 
         return HttpResponse(
             json.dumps(response_data),

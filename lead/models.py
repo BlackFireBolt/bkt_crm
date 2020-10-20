@@ -1,15 +1,24 @@
+import pytz
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 import json
 from time import time
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from django.utils import timezone
+from django.utils.dateparse import parse_date, parse_datetime
 
 from .tasks import notification
 from .utilities import broadcast
 
 logger = logging.getLogger(__name__)
+
+
+def celery_localtime_util(import_datetime):
+    local_tz = pytz.timezone('Europe/Minsk')
+    correct_dt = local_tz.localize(import_datetime)
+    return correct_dt.astimezone(pytz.UTC)
 
 
 def json_serial(obj):
@@ -128,8 +137,7 @@ class Notification(models.Model):
             'lead': self.lead.id,
             'manager': self.manager.id
         }
-
-        notification.apply_async(kwargs=content, eta=self.time)
+        notification.apply_async(kwargs=content, eta=celery_localtime_util(self.time))
 
     class Meta:
         verbose_name = 'Напоминание'
