@@ -38,23 +38,18 @@ $(document).ready(function() {
                 orderable: true,
             },
             {
-                data: 'email',
+                data: 'depozit',
                 targets: [6],
                 orderable: true,
             },
             {
-                data: 'depozit',
+                data: 'created_date',
                 targets: [7],
                 orderable: true,
             },
             {
-                data: 'created_date',
-                targets: [8],
-                orderable: true,
-            },
-            {
                 data: 'manager',
-                targets: [9],
+                targets: [8],
                 orderable: true,
             },
         ],

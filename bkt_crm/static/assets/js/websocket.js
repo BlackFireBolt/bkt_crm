@@ -47,9 +47,9 @@
 	}
     socket.onmessage = function(event) {
         var data = JSON.parse(event.data);
-
+        console.log(data)
         if (data.type == 'data.notification'){
-            console.log('task', data);
+            console.log('task notif', data);
             NotifyLead('top', 'left', data.lead, data.text);
 	        var options = {
 	            title: "BKT crm",
@@ -60,8 +60,22 @@
 	            }
 	        };
 	        $("#easyNotify").easyNotify(options);
-        }
-        else {
+        } else if (data.type == 'task.new') {
+            $('<div class="card" id="task-' + data.id + '">' + '<div class="card-body">' + '<h4 class="card-title" id="task-' + data.id + '-title">' +
+            data.expiration_time + '</h4>' + '<p class="card-text" id="task-' + data.id + '-text">' + data.text +'</p>'+ '<button id="task-' + data.id
+            + '-button" class="task-button btn btn-fab btn-icon btn-round animation-on-hover float-right" type="button"'
+             + 'data-id="' + data.id + '">' +
+            '<i class="tim-icons icon-check-2"></i>' + '</button>' + '</div>' + '</div>')
+            .hide().prependTo('.side-content').show('slow');
+        } else if (data.type == 'task.update') {
+            if (!data.complete) {
+                var task_id = '#task-' + data.id,
+                    task_button = task_id + '-button';
+                $(task_id).addClass('bg-danger');
+                console.log(task_id, task_button);
+                $(task_button).attr('disabled', 'true');
+            }
+        } else  {
             var table = $('.datatable').DataTable();
             var rowNode = table.row.add(data).draw().node();
             console.log('id', table.rows({selected: true}).data('id'));

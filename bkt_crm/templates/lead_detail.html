@@ -150,16 +150,6 @@
 
                                 </div>
                                 <div class="card-body">
-                            <div class="notifications">
-                                {% for notification in notifications %}
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="mb-auto">Время: {{ notification.time|date:'Y-m-d H:i' }}</p>
-                                        <p class="mb-auto">Текст: {{ notification.text }}</p>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
                             <form method="POST" id="add-notification-form" action="{% url 'lead:add-note' %}">
                                 {% csrf_token %}
                                 <div class="form-group" id="notification_time">

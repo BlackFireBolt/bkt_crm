@@ -31,18 +31,13 @@ var dt_table = $('.datatable').dataTable({
                 orderable: true,
             },
             {
-                data: 'email',
+                data: 'depozit',
                 targets: [5],
                 orderable: true,
             },
             {
-                data: 'depozit',
-                targets: [6],
-                orderable: true,
-            },
-            {
                 data: 'created_date',
-                targets: [7],
+                targets: [6],
                 orderable: true,
             },
         ],

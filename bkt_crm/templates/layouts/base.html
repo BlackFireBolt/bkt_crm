@@ -21,78 +21,88 @@
 {% load user_tags %}
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.ico' %}">
-  <link rel="icon" type="image/png"          href="{% static 'assets/img/favicon.ico'    %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.ico' %}">
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.ico'    %}">
 
-  <title>
-    Панель {% if user|has_group:'Администратор' %} Администратора БКТ {% else %} менеджера {% endif %} - {% block title %}{% endblock %}
-  </title>
+    <title>
+        Панель {% if user|has_group:'Администратор' %}
+        Администратора БКТ
+        {% else %}
+        менеджера
+        {% endif %} - {% block title %}
+        {% endblock %}
+    </title>
 
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
-  <!-- Nucleo Icons -->
-  <link href="{% static 'assets/css/nucleo-icons.css' %}" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="{% static 'assets/css/black-dashboard.css' %}" rel="stylesheet" />
-  <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet" />
-  <!-- calendar -->
-  <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
-  <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.css' %}" />
-  <!-- Optional Themes -->
-  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.midnight-blue.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.orange-coral.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.royal-navy.css' %}" />
-  <!-- JavaScript -->
-  <!-- Specific Page CSS goes HERE  -->
+    <!-- Nucleo Icons -->
+    <link href="{% static 'assets/css/nucleo-icons.css' %}" rel="stylesheet"/>
+    <!-- CSS Files -->
+    <link href="{% static 'assets/css/black-dashboard.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet"/>
+    <!-- calendar -->
+    <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.css' %}"/>
+    <!-- Optional Themes -->
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.midnight-blue.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.orange-coral.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/evo-calendar/css/evo-calendar.royal-navy.css' %}"/>
+    <!-- JavaScript -->
+    <!-- Specific Page CSS goes HERE  -->
 
-  {% block stylesheets %}{% endblock stylesheets %}
+    {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 
-<body class="white-content">
-  <div class="wrapper">
+<body class="white-content body-wrapper">
+<section class="site-wrapper">
+    <section class="wrapper content-wrapper">
 
-    {% include 'includes/sidebar.html' %}
+        {% include 'includes/sidebar.html' %}
 
-    <div class="main-panel">
+        <div class="main-panel">
 
-      {% include 'includes/navigation.html' %}
+            {% include 'includes/navigation.html' %}
 
-      <div class="content">
+            <div class="content">
 
-        {% block content %}{% endblock content %}
+                {% block content %}{% endblock content %}
 
-      </div>
+            </div>
 
-      {% include 'includes/footer.html' %}
+            {% include 'includes/footer.html' %}
 
-    </div>
-    
-  </div>
+        </div>
 
-  {% block add_lead_modal %}
-  {% endblock %}
+    </section>
+    <section class="side-wrapper">
+        {% include 'includes/tasks.html' %}
+    </section>
+</section>
+{% block add_lead_modal %}
+{% endblock %}
 
-  {% block import_modal %}
-  {% endblock %}
+{% block import_modal %}
+{% endblock %}
 
-  {% block add_manager_modal %}
-  {% endblock %}
+{% block add_manager_modal %}
+{% endblock %}
 
-  {% include 'includes/fixed-plugin.html' %}
+{% block add_task_modal %}
+{% endblock %}
 
-  {% include 'includes/scripts.html' %}
+{% include 'includes/scripts.html' %}
 
-  {% include 'includes/scripts-sidebar.html' %}
+{% include 'includes/scripts-sidebar.html' %}
 
-  <!-- Specific Page JS goes HERE  -->
-  {% block javascripts %}{% endblock javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
 
 </body>
 

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Lead, Note, Notification
+from .models import Lead, Note, Notification, Task
 
 
 class LeadForm(forms.ModelForm):
@@ -106,4 +106,28 @@ class LeadManagerForm(forms.ModelForm):
                 'class': 'form-control',
                 'required': True
             })
+        }
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['text', 'expiration_time', 'manager']
+        widgets = {
+            'manager': forms.Select(attrs={
+                'id': 'task_manager',
+                'class': 'form-control',
+                'required': True
+            }),
+            'text': forms.Textarea(attrs={
+                'id': 'task_text',
+                'class': 'form-control',
+                'required': True
+            }),
+            'expiration_time': forms.DateTimeInput(attrs={
+                'id': 'task_expiration_time',
+                'class': 'form-control',
+                'placeholder': 'Дата и время',
+                'required': True
+            }),
         }

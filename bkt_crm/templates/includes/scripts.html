@@ -26,7 +26,7 @@
         {% for event in events %}
         {
           id: {{ event.id }},
-          name: "{{ event.time|date:"H:i" }}",
+          name: "Лид №{{ event.lead.id }}, {{ event.time|date:"H:i" }}",
           date: "{{ event.time|date:"n/d/Y" }}",
           description: "{{ event.text }}",
           type: "event",

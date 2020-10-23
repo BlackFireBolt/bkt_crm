@@ -80,7 +80,7 @@ def lead_detail(request, pk):
     notes_form = NoteForm()
     notification_form = NotificationForm()
     notes = models.Note.objects.filter(lead=pk)
-    notifications = models.Notification.objects.filter(lead=pk).order_by('-id')[:3][::-1]
+    notifications = models.Notification.objects.filter(lead=pk).order_by('-id')[:2][::-1]
     context = {'lead': lead, 'lead_form': lead_form, 'notes': notes, 'notes_form': notes_form,
                'notification_form': notification_form, 'notifications': notifications}
     return render(request, 'lead_detail.html', context)
@@ -272,7 +272,7 @@ def add_note(request):
         note_object = models.Note(lead_id=lead_id, text=note_text)
         note_object.save()
 
-        response_data['result'] = 'Create post successful!'
+        response_data['result'] = 'Create note successful!'
         response_data['note_text'] = note_object.text
         response_data['note_created_date'] = note_object.created_date.strftime('%Y-%m-%d %H:%M')
 
@@ -299,9 +299,54 @@ def add_notification(request):
         notification_object = models.Notification(lead_id=lead_id, text=notification_data, time=time, manager=manager)
         notification_object.save()
 
-        response_data['result'] = 'Create post successful!'
+        response_data['result'] = 'Create notification successful!'
         response_data['notification_text'] = notification_object.text
         response_data['notification_time'] = notification_object.time.strftime('%Y-%m-%d %H:%M')
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
+
+@login_required(login_url='/login/')
+def update_task(request):
+    if request.method == 'POST':
+        task_id = request.POST.get('task_id')
+
+        task = models.Task.objects.get(pk=task_id)
+        task.complete = True
+        task.save()
+
+        response_data = {'result': 'Update task successful!'}
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
+
+@login_required(login_url='/login/')
+def add_task(request):
+    if request.method == 'POST':
+        manager = models.User.objects.get(id=request.POST.get('manager'))
+        text = request.POST.get('text')
+        expiration_time = models.parse_datetime(request.POST.get('expiration_time'))
+
+        task = models.Task(manager=manager, text=text, expiration_time=expiration_time, type='t')
+        task.save()
+
+        response_data = {'result': 'Create task successful!'}
 
         return HttpResponse(
             json.dumps(response_data),

@@ -33,3 +33,46 @@ td.table_client {
 t.table_hot{
     background-color: rgba(214, 100, 0, 0.49) !important;
 }
+
+/* side stick panel */
+.side-wrapper, .side-content{
+    width: 320px;
+}
+.side-wrapper {
+right: 0;
+top: 0;
+position: absolute;
+bottom: 0;
+}
+
+.site-wrapper {
+position: relative;
+width: 100%;
+}
+
+.side-content {
+position: fixed;
+top: 75px;
+right: 0;
+bottom: 0;
+overflow-y: scroll;
+overflow-x: hidden;
+}
+
+.body-wrapper {
+    position:relative;
+}
+
+.content-wrapper{
+    margin-right: 341px;
+}
+
+.btn-task {
+    position: fixed !important;
+    top: 15px;
+    right: 15px;
+}
+
+.task-title {
+    top: 10px;
+}

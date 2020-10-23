@@ -134,10 +134,8 @@ $('#add_note').click(function (event){
         },
         success:function(json){
             $('#post_note').val('');
-            $('.notes').append(
-                '<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + json.note_created_date + '</p>' + '<p class="mb-auto">' + json.note_text +'</p>' +
-                '</div>' + '</div>'
-            )
+            $('<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + json.note_created_date + '</p>' + '<p class="mb-auto">' + json.note_text +'</p>' +
+                '</div>' + '</div>').hide().appendTo('.notes').show('slow');
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
         },
@@ -164,10 +162,58 @@ $('#add_notification').click(function (event){
         success:function(json){
             $('#post_notification').val('');
             $('#post_time').val('');
-            $('.notifications').append(
-                '<div class="card">' + '<div class="card-body">' + '<p class="mb-auto">' + 'Время: ' + json.notification_time + '</p>' + '<p class="mb-auto">' + 'Текст: ' + json.notification_text +'</p>' +
-                '</div>' + '</div>'
-            )
+            console.log(json); // log the returned json to the console
+            console.log("success"); // another sanity check
+        },
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+});
+
+$('.side-content').on('click', '.task-button', function(event){
+    event.preventDefault();
+    var task_id = $(this).data('id');
+    $(this).attr('disabled', 'true');
+    $('#task-' + task_id).addClass('bg-success');
+    $('#task-' + task_id + '-title').css('textDecoration', 'line-through');
+    $('#task-' + task_id + '-text').css('textDecoration', 'line-through');
+    $.ajax({
+        url:"/update-task/",
+        type:"POST",
+        data:{
+            task_id: task_id,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            console.log("success"); // another sanity check
+        },
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+});
+
+$('#add_task').click(function (event){
+    event.preventDefault();
+    $('#addTaskModal').modal('toggle');
+    $.ajax({
+        url:"/add-task/",
+        type:"POST",
+        data:{
+            manager: $('#task_manager').val(),
+            text: $('#task_text').val(),
+            expiration_time: $('#task_expiration_time').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            $('#task_manager').val('');
+            $('#task_text').val('');
+            $('#task_expiration_time').val('');
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
         },

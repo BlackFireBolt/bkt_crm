@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta
 from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
 
-from .tasks import notification
+from .tasks import notification, expire_task
 from .utilities import broadcast
 
 logger = logging.getLogger(__name__)
@@ -87,7 +87,6 @@ class Lead(models.Model):
         content = {
             'id': self.pk,
             'name': self.name,
-            'email': self.email,
             'depozit': self.depozit,
             'phone': self.phone,
             'country': self.country,
@@ -95,7 +94,6 @@ class Lead(models.Model):
             'status': self.status,
             'manager': manager,
             'type': notification_type,
-            'time': time()
         }
 
         # Send notification to opened channels
@@ -137,8 +135,57 @@ class Notification(models.Model):
             'lead': self.lead.id,
             'manager': self.manager.id
         }
+        notification_object = Task(text=self.text, expiration_time=self.time, manager=self.manager, type='n')
+        notification_object.save()
         notification.apply_async(kwargs=content, eta=celery_localtime_util(self.time))
 
     class Meta:
         verbose_name = 'Напоминание'
         verbose_name_plural = 'Напоминания'
+
+
+class Task(models.Model):
+    text = models.TextField(verbose_name='Текст')
+    expiration_time = models.DateTimeField(unique=False, verbose_name='Время окончания')
+    created_time = models.DateTimeField(unique=False, default=datetime.now, verbose_name='Время создания')
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Менеджер')
+    complete = models.BooleanField(default=False, verbose_name='Выполнено')
+    expired = models.BooleanField(default=False, verbose_name='Истекло')
+    OPTIONS = (
+        ('n', 'Уведомление'),
+        ('t', 'Задача'),
+    )
+    type = models.CharField(max_length=1, choices=OPTIONS, null=True, verbose_name='Статус')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # Go through a serializer
+            save_type = "task.new"
+        else:
+            save_type = "task.update"
+
+        # Save the data
+        super(Task, self).save(*args, **kwargs)
+
+        content = {
+            'id': self.pk,
+            'text': self.text,
+            'complete': self.complete,
+            'expired': self.expired,
+            'expiration_time': json_serial(self.expiration_time.strftime('%Y-%m-%d %H:%M')),
+            'manager': self.manager.username,
+            'type': save_type,
+        }
+
+        broadcast(self.manager.id, content)
+        users = User.objects.filter(groups__name='Администратор')
+        for user in users:
+            broadcast(user.id, content)
+        if save_type == 'task.new':
+            expire_task.apply_async(kwargs={'task_id': self.pk}, eta=celery_localtime_util(self.expiration_time) +
+                                                                     timedelta(minutes=10))
+
+    class Meta:
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачи'
+        ordering = ['-created_time']
