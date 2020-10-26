@@ -95,7 +95,8 @@ def add_lead_post(request):
         country = request.POST.get('country')
         created_date = request.POST.get('created_date')
 
-        lead = models.Lead(name=name, phone=phone, email=email, country=country, created_date=created_date)
+        lead = models.Lead(name=name, phone=phone, email=email, country=country, created_date=created_date,
+                           source='land')
         lead.save()
         return HttpResponse(status=200)
 

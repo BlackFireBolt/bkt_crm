@@ -39,14 +39,14 @@ class UserEncoder(json.JSONEncoder):
 
 class Lead(models.Model):
     # lead information-----------------------
-    name = models.CharField(max_length=64, blank=True, verbose_name='Имя')
-    email = models.CharField(max_length=64, blank=True, unique=False, verbose_name='Email')
+    name = models.CharField(max_length=64, null=True, blank=True, verbose_name='Имя')
+    email = models.CharField(max_length=64, null=True, blank=True, unique=False, verbose_name='Email')
     phone = models.CharField(max_length=64, unique=False, verbose_name='Телефон')
-    country = models.CharField(max_length=5, unique=False, blank=True, default="None", verbose_name='Страна')
-    time_zone = models.CharField(max_length=10, unique=False, blank=True, default="None", verbose_name='Часовой пояс')
-    created_date = models.DateTimeField(db_index=True, default=datetime.now, blank=True,
+    country = models.CharField(max_length=5, null=True, unique=False, blank=True, default="None", verbose_name='Страна')
+    time_zone = models.CharField(max_length=10, null=True, unique=False, blank=True, default="None", verbose_name='Часовой пояс')
+    created_date = models.DateTimeField(db_index=True, default=datetime.now, null=True, blank=True,
                                         verbose_name='Дата регистрации')
-    depozit = models.CharField(max_length=12, blank=True, default='0 $', verbose_name='Депозит')
+    depozit = models.CharField(max_length=12, null=True, blank=True, default='0 $', verbose_name='Депозит')
     # additional information-----------------
     OPTIONS = (
         ('n', 'Новый'),
@@ -98,6 +98,9 @@ class Lead(models.Model):
 
         # Send notification to opened channels
         if self.manager:
+            users = User.objects.filter(groups__name='Администратор')
+            for user in users:
+                broadcast(user.id, content)
             broadcast(self.manager.id, content)
         else:
             users = User.objects.filter(groups__name='Администратор')
