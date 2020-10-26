@@ -88,6 +88,7 @@ def lead_detail(request, pk):
 
 @csrf_exempt
 def add_lead_post(request):
+    print(request)
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
