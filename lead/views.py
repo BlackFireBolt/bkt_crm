@@ -92,15 +92,9 @@ def add_lead_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
-        #name = request.POST.get('name')
-        #phone = request.POST.get('phone')
-        #email = request.POST.get('email')
-        #country = request.POST.get('country')
-        #created_date = request.POST.get('created_date')
-
-        #lead = models.Lead(name=name, phone=phone, email=email, country=country, created_date=created_date,
-        #                   source='land')
-        #lead.save()
+        lead = models.Lead(name=data.name, phone=data.phone, email=data.email, country=data.country,
+                           created_date=models.parse_datetime(data.created_date), source='land')
+        lead.save()
         return HttpResponse(status=200)
 
 
