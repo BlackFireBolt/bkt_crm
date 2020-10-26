@@ -26,7 +26,8 @@ SECRET_KEY = '2j+8w4%!%q)b5g=votzko%@12l_(#v9an50=03@!5$u$%vyy-e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bkt-crm.tk', 'www.bkt-crm.tk', '213.183.56.121', '127.0.0.1']
+ALLOWED_HOSTS = ['bkt-crm.tk', 'www.bkt-crm.tk', '213.183.56.121', '127.0.0.1',
+                 'www.partner.trade-academy.cf', 'partner.trade-academy.cf']
 
 # Application definition
 
