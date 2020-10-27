@@ -175,10 +175,6 @@ $('#add_notification').click(function (event){
 $('.side-content').on('click', '.task-button', function(event){
     event.preventDefault();
     var task_id = $(this).data('id');
-    $(this).attr('disabled', 'true');
-    $('#task-' + task_id).addClass('bg-success');
-    $('#task-' + task_id + '-title').css('textDecoration', 'line-through');
-    $('#task-' + task_id + '-text').css('textDecoration', 'line-through');
     $.ajax({
         url:"/update-task/",
         type:"POST",

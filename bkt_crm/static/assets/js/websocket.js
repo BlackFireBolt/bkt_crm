@@ -61,12 +61,23 @@
 	        };
 	        $("#easyNotify").easyNotify(options);
         } else if (data.type == 'task.new') {
+            if (data.task_type == 'n') {
             $('<div class="card" id="task-' + data.id + '">' + '<div class="card-body">' + '<h4 class="card-title" id="task-' + data.id + '-title">' +
-            data.expiration_time + '</h4>' + '<p class="card-text" id="task-' + data.id + '-text">' + data.text +'</p>'+ '<button id="task-' + data.id
+            data.expiration_time + '</h4>' + '<h6 class="card-subtitle mb-2 text-muted">Лид №' + data.lead + '</h6><span class="badge badge-warning mb-2">Напоминание</span>'
+            + '<p class="card-text" id="task-' + data.id + '-text">' + data.text +'</p>' + '<p>Менеджер: ' + data.manager +'</p>' + '<button id="task-' + data.id
             + '-button" class="task-button btn btn-fab btn-icon btn-round animation-on-hover float-right" type="button"'
              + 'data-id="' + data.id + '">' +
             '<i class="tim-icons icon-check-2"></i>' + '</button>' + '</div>' + '</div>')
             .hide().prependTo('.side-content').show('slow');
+            } else if (data.task_type == 't'){
+            $('<div class="card" id="task-' + data.id + '">' + '<div class="card-body">' + '<h4 class="card-title" id="task-' + data.id + '-title">' +
+            data.expiration_time + '</h4>' + '<span class="badge badge-info mb-2">Задача</span>' + '<p class="card-text" id="task-' + data.id + '-text">' + data.text +'</p>'
+            + '<p>Менеджер: ' + data.manager +'</p>' + '<button id="task-' + data.id
+            + '-button" class="task-button btn btn-fab btn-icon btn-round animation-on-hover float-right" type="button"'
+             + 'data-id="' + data.id + '">' +
+            '<i class="tim-icons icon-check-2"></i>' + '</button>' + '</div>' + '</div>')
+            .hide().prependTo('.side-content').show('slow');
+            }
         } else if (data.type == 'task.update') {
             if (!data.complete) {
                 var task_id = '#task-' + data.id,
@@ -76,10 +87,7 @@
                 $(task_button).attr('disabled', 'true');
             } else {
                 var task_id = data.id;
-                $('#task-' + task_id + '-button').attr('disabled', 'true');
-                $('#task-' + task_id).addClass('bg-success');
-                $('#task-' + task_id + '-title').css('textDecoration', 'line-through');
-                $('#task-' + task_id + '-text').css('textDecoration', 'line-through');
+                $('#task-' + task_id).fadeOut('slow');
             }
         } else  {
             var table = $('.datatable').DataTable();

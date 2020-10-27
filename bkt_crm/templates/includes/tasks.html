@@ -17,19 +17,23 @@
 
             {% for task in tasks %}
 
-            <div class="card {% if task.complete %}bg-success{% elif task.expired %}bg-danger{% endif %}"
+            <div class="card {% if task.expired %}bg-danger{% endif %}"
                  id="task-{{ task.id }}">
                 <div class="card-body">
-                    <h4 class="card-title" id="task-{{ task.id }}-title" {% if task.complete %}
-                        style="text-decoration: line-through" {% endif %}>
+                    <h4 class="card-title" id="task-{{ task.id }}-title">
                         {{ task.expiration_time|date:"Y-m-d H:i" }}
                     </h4>
-                    <p class="card-text" id="task-{{ task.id }}-text" {% if task.complete %}
-                       style="text-decoration: line-through" {% endif %}>{{ task.text }}</p>
+                    {% if task.type == 't' %}
+                    <span class="badge badge-info mb-2">Задача</span>
+                    {% elif task.type == 'n' %}
+                    <h6 class="card-subtitle mb-2 text-muted">Лид №{{ task.lead }}</h6>
+                    <span class="badge badge-warning mb-2">Напоминание</span>
+                    {% endif %}
+                    <p class="card-text" id="task-{{ task.id }}-text">{{ task.text }}</p>
+                    <p>Менеджер: {{ task.manager }}</p>
                     <button id="task-{{ task.id }}-button"
                             class="task-button btn btn-fab btn-icon btn-round animation-on-hover float-right"
-                            type="button" data-id="{{ task.id }}"
-                            {% if task.complete or task.expired %}disabled{% endif %}>
+                            type="button" data-id="{{ task.id }}">
                         <i class="tim-icons icon-check-2"></i>
                     </button>
                 </div>

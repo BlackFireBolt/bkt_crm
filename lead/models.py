@@ -141,7 +141,8 @@ class Notification(models.Model):
             'lead': self.lead.id,
             'manager': self.manager.id
         }
-        notification_object = Task(text=self.text, expiration_time=self.time, manager=self.manager, type='n')
+        notification_object = Task(text=self.text, expiration_time=self.time, manager=self.manager, type='n',
+                                   lead=self.lead.id)
         notification_object.save()
         notification.apply_async(kwargs=content, eta=celery_localtime_util(self.time))
 
@@ -155,6 +156,7 @@ class Task(models.Model):
     expiration_time = models.DateTimeField(unique=False, verbose_name='Время окончания')
     created_time = models.DateTimeField(unique=False, default=datetime.now, verbose_name='Время создания')
     manager = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Менеджер')
+    lead = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='Лид')
     complete = models.BooleanField(default=False, verbose_name='Выполнено')
     expired = models.BooleanField(default=False, verbose_name='Истекло')
     OPTIONS = (
@@ -178,6 +180,8 @@ class Task(models.Model):
             'text': self.text,
             'complete': self.complete,
             'expired': self.expired,
+            'lead': self.lead,
+            'task_type': self.type,
             'expiration_time': json_serial(self.expiration_time.strftime('%Y-%m-%d %H:%M')),
             'manager': self.manager.username,
             'type': save_type,

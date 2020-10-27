@@ -17,5 +17,6 @@ def notification(text, lead, manager):
 @shared_task
 def expire_task(task_id):
     task = models.Task.objects.get(pk=task_id)
-    task.expired = True
-    task.save()
+    if not task.complete:
+        task.expired = True
+        task.save()
