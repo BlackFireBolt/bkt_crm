@@ -361,7 +361,7 @@ class MarketListLeadJson(LoginRequiredMixin, BaseDatatableView):
     model = models.Lead
     login_url = '/login/'
 
-    columns = ['id', 'name', 'phone', 'country', 'created_date']
+    columns = ['id', 'status', 'name', 'phone', 'country', 'created_date']
 
     def get_initial_queryset(self):
         return models.Lead.objects.exclude(status='d').filter(source='land')

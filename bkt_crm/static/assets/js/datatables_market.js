@@ -11,23 +11,28 @@ var dt_table = $('.datatable').dataTable({
                 orderable: true,
             },
             {
-                data: 'name',
+                data: 'status',
                 targets: [1],
                 orderable: true,
             },
             {
-                data: 'phone',
+                data: 'name',
                 targets: [2],
                 orderable: true,
             },
             {
-                data: 'country',
+                data: 'phone',
                 targets: [3],
                 orderable: true,
             },
             {
-                data: 'created_date',
+                data: 'country',
                 targets: [4],
+                orderable: true,
+            },
+            {
+                data: 'created_date',
+                targets: [5],
                 orderable: true,
             },
         ],
