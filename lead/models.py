@@ -194,4 +194,4 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
-        ordering = ['-created_time']
+        ordering = ['expiration_time']

@@ -28,7 +28,7 @@
           id: {{ event.id }},
           name: "Лид №{{ event.lead.id }}, {{ event.time|date:"H:i" }}",
           date: "{{ event.time|date:"n/d/Y" }}",
-          description: "{{ event.text }}",
+          description: "{{ event.text|escapejs }}",
           type: "event",
         },
         {% endfor %}
