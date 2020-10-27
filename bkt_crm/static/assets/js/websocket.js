@@ -17,6 +17,20 @@
             }
         });
 	}
+	var NewTask = function(from, align){
+    	$.notify({
+        	icon: "tim-icons icon-bell-55",
+        	message: "Добавлена новая задача."
+
+        },{
+            type: 'info',
+            timer: 0,
+            placement: {
+                from: from,
+                align: align
+            }
+        });
+	}
 	var UpdateLead = function(from, align, id){
     	$.notify({
         	icon: "tim-icons icon-bell-55",
@@ -70,6 +84,16 @@
             '<i class="tim-icons icon-check-2"></i>' + '</button>' + '</div>' + '</div>')
             .hide().prependTo('.side-content').show('slow');
             } else if (data.task_type == 't'){
+            NewTask('top', 'left');
+            var options = {
+	            title: "BKT crm",
+	            options: {
+	            body: "Новая задача: \n" + data.text,
+	            icon: "https://bkt-crm.tk/static/assets/img/favicon.ico",
+	            lang: 'ru-RU',
+	            }
+	        };
+	        $("#easyNotify").easyNotify(options);
             $('<div class="card" id="task-' + data.id + '">' + '<div class="card-body">' + '<h4 class="card-title" id="task-' + data.id + '-title">' +
             data.expiration_time + '</h4>' + '<span class="badge badge-info mb-2">Задача</span>' + '<p class="card-text" id="task-' + data.id + '-text">' + data.text +'</p>'
             + '<p>Менеджер: ' + data.manager +'</p>' + '<button id="task-' + data.id
