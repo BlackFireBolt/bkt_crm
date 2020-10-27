@@ -107,7 +107,7 @@ class Lead(models.Model):
             for user in users:
                 broadcast(user.id, content)
         if self.source == 'land':
-            market = User.objects.get(user__username='marketolog')
+            market = User.objects.get(username='marketolog')
             broadcast(market.id, content)
 
     class Meta:
