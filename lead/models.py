@@ -102,7 +102,7 @@ class Lead(models.Model):
             for user in users:
                 broadcast(user.id, content)
             broadcast(self.manager.id, content)
-            market = User.objects.get(username='marketolog')
+            market = User.objects.get(user__username='marketolog')
             broadcast(market.id, content)
         else:
             users = User.objects.filter(groups__name='Администратор')
