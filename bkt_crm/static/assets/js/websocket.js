@@ -74,6 +74,12 @@
                 $(task_id).addClass('bg-danger');
                 console.log(task_id, task_button);
                 $(task_button).attr('disabled', 'true');
+            } else {
+                var task_id = data.id;
+                $('#task-' + task_id + '-button').attr('disabled', 'true');
+                $('#task-' + task_id).addClass('bg-success');
+                $('#task-' + task_id + '-title').css('textDecoration', 'line-through');
+                $('#task-' + task_id + '-text').css('textDecoration', 'line-through');
             }
         } else  {
             var table = $('.datatable').DataTable();

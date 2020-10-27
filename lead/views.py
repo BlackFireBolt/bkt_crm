@@ -355,3 +355,23 @@ def add_task(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+
+class MarketListLeadJson(LoginRequiredMixin, BaseDatatableView):
+    model = models.Lead
+    login_url = '/login/'
+
+    columns = ['id', 'name', 'phone', 'country', 'created_date']
+
+    def get_initial_queryset(self):
+        return models.Lead.objects.exclude(status='d').filter(source='land')
+
+
+class MarketListLead(LoginRequiredMixin, TemplateView):
+    template_name = 'lead_list_market.html'
+    login_url = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(MarketListLead, self).get_context_data(**kwargs)
+        context['form'] = LeadForm()
+        return context

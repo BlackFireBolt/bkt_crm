@@ -4,6 +4,8 @@ from . import views
 
 app_name = 'lead'
 urlpatterns = [
+    path('market_page_json/', views.MarketListLeadJson.as_view(), name='market_lead_list_json'),
+    path('market_page/', views.MarketListLead.as_view(), name='market_lead_list'),
     path('admin_page_json/', views.AdminListLeadJson.as_view(), name='admin_lead_list_json'),
     path('admin_page/', views.AdminListLead.as_view(), name='admin_lead_list'),
     path('add_manager/', views.add_manager, name='add-manager'),
