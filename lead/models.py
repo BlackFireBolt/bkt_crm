@@ -100,7 +100,8 @@ class Lead(models.Model):
         if self.manager:
             users = User.objects.filter(groups__name='Администратор')
             for user in users:
-                broadcast(user.id, content)
+                if user.id != self.manager.id:
+                    broadcast(user.id, content)
             broadcast(self.manager.id, content)
         else:
             users = User.objects.filter(groups__name='Администратор')
@@ -180,7 +181,7 @@ class Task(models.Model):
             'text': self.text,
             'complete': self.complete,
             'expired': self.expired,
-            'lead': self.lead,
+            'lead': str(self.lead),
             'task_type': self.type,
             'expiration_time': json_serial(self.expiration_time.strftime('%Y-%m-%d %H:%M')),
             'manager': self.manager.username,
@@ -190,7 +191,8 @@ class Task(models.Model):
         broadcast(self.manager.id, content)
         users = User.objects.filter(groups__name='Администратор')
         for user in users:
-            broadcast(user.id, content)
+            if user.id != self.manager.id:
+                broadcast(user.id, content)
         if save_type == 'task.new':
             expire_task.apply_async(kwargs={'task_id': self.pk}, eta=celery_localtime_util(self.expiration_time) +
                                                                      timedelta(minutes=10))
