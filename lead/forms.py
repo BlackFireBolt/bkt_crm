@@ -7,7 +7,7 @@ class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = ['name', 'email', 'phone', 'country', 'time_zone', 'created_date', 'status', 'manager',
-                  'source', 'depozit']
+                  'source', 'utm', 'depozit']
         widgets = {
             'name': forms.TextInput(attrs={
                 'id': 'post_name',
@@ -36,6 +36,10 @@ class LeadForm(forms.ModelForm):
             }),
             'source': forms.TextInput(attrs={
                 'id': 'post_source',
+                'class': 'form-control',
+            }),
+            'utm': forms.TextInput(attrs={
+                'id': 'post_utm',
                 'class': 'form-control',
             }),
             'created_date': forms.DateTimeInput(attrs={

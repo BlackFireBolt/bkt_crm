@@ -35,6 +35,11 @@ var dt_table = $('.datatable').dataTable({
                 targets: [5],
                 orderable: true,
             },
+            {
+                data: 'utm',
+                targets: [6],
+                orderable: true,
+            },
         ],
         processing: true,
         serverSide: true,

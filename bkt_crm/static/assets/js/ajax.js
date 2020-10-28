@@ -58,7 +58,8 @@ function create_lead(url, lead_id=null){
             time_zone: $('#post_time_zone').val(),
             created_date: $('#post_created_date').val(),
             manager: $('#post_manager').val(),
-
+            utm: $('#post_utm').val(),
+            source: $('#post_source').val(),
             status: $('#post_status').val(),
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'

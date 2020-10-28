@@ -164,6 +164,8 @@ def change_lead(request):
         created_date = request.POST.get('created_date')
         status = request.POST.get('status')
         manager_id = request.POST.get('manager')
+        utm = request.POST.get('utm')
+        source = request.POST.get('source')
 
         lead = models.Lead.objects.get(pk=leadpk)
         lead.name = name
@@ -174,6 +176,8 @@ def change_lead(request):
         lead.country = country
         lead.created_date = created_date
         lead.status = status
+        lead.source = source
+        lead.utm = utm
         managerold_id = None
         if lead.manager is not None:
             managerold_id = lead.manager.id
@@ -361,7 +365,7 @@ class MarketListLeadJson(LoginRequiredMixin, BaseDatatableView):
     model = models.Lead
     login_url = '/login/'
 
-    columns = ['id', 'status', 'name', 'phone', 'country', 'created_date']
+    columns = ['id', 'status', 'name', 'phone', 'country', 'created_date', 'utm']
 
     def get_initial_queryset(self):
         return models.Lead.objects.exclude(status='d').filter(source='land')
