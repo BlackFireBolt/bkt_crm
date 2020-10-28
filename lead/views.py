@@ -93,7 +93,7 @@ def add_lead_post(request):
         data = json.loads(request.body)
         print(data)
         lead = models.Lead(name=data['name'], phone=data['phone'], email=data['email'], country=data['country'],
-                           created_date=models.parse_datetime(data['created_date']), source='land')
+                           created_date=models.parse_datetime(data['created_date']), source='land', utm=data['utm'])
         lead.save()
         return HttpResponse(status=200)
 
