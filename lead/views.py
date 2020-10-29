@@ -182,7 +182,7 @@ def change_lead(request):
         if lead.manager is not None:
             managerold_id = lead.manager.id
         lead.time_zone = time_zone
-        if manager_id is not None:
+        if manager_id:
             lead.manager = models.User.objects.get(id=manager_id)
         if managerold_id == request.user.id or request.user.groups.filter(name='Администратор').exists():
             lead.save()
