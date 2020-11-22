@@ -12,6 +12,7 @@ urlpatterns = [
     path('import_csv/', views.add_import, name='add-import'),
     path('change-lead/', views.change_lead, name='change-lead'),
     path('add-lead-post/', views.add_lead_post, name='add-lead-post'),
+    path('add-lead-post2/', views.add_lead_post2, name='add-lead-post2'),
     path('add-lead/', views.add_lead, name='add-lead'),
     path('update-task/', views.update_task, name='update-task'),
     path('add-task/', views.add_task, name='add-task'),

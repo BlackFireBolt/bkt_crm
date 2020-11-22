@@ -98,6 +98,18 @@ def add_lead_post(request):
         return HttpResponse(status=200)
 
 
+@csrf_exempt
+def add_lead_post2(request):
+    print(request)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data)
+        lead = models.Lead(name=data['name'], phone=data['phone'], email=data['email'], country=data['country'],
+                           created_date=models.parse_datetime(data['created_date']), source='land2', utm=data['utm'])
+        lead.save()
+        return HttpResponse(status=200)
+
+
 @login_required(login_url='/login/')
 def add_lead(request):
     if request.method == 'POST':
