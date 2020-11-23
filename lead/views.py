@@ -380,7 +380,10 @@ class MarketListLeadJson(LoginRequiredMixin, BaseDatatableView):
     columns = ['id', 'status', 'name', 'phone', 'country', 'created_date', 'utm']
 
     def get_initial_queryset(self):
-        return models.Lead.objects.exclude(status='d').filter(source='land')
+        if self.request.user.username == 'marketolog':
+            return models.Lead.objects.exclude(status='d').filter(source='land')
+        elif self.request.user.username == 'marketolog2':
+            return models.Lead.objects.exclude(status='d').filter(source='land2')
 
 
 class MarketListLead(LoginRequiredMixin, TemplateView):
